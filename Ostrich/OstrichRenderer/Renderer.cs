@@ -36,8 +36,8 @@ namespace OstrichRenderer
 
         public static void InitScene()
         {
-            World.List.Add(new Circle(new Vector2(250, 250), 70, new Light(new Color32(1, 0.5, 0), 1)));
-            World.List.Add(new Circle(new Vector2(150, 150), 50, new Light(new Color32(0.5, 0.5, 0), 1)));
+            World.List.Add(new Circle(new Vector2(250, 300), 70, new Light(new Color32(1, 0.5, 0), 1)));
+            World.List.Add(new Circle(new Vector2(150, 150), 50, new Light(new Color32(1, 1, 0), 1)));
             World.List.Add(new Circle(new Vector2(350, 150), 50, new Light(new Color32(0.5, 1, 0), 1)));
         }
 
