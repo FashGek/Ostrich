@@ -38,28 +38,15 @@ namespace OstrichRenderer.Primitives
             double dis2 = oc.X * oc.X + oc.Y * oc.Y - proj * proj; //勾股定理求出圆心到直线的距离（未开根
             if (dis2 > R2) return false; //距离大于半径，无交点
 
-            Vector2 foot = ray.Origin + ray.Direction * proj; //圆心到射线的垂足
-
-            double tangent = R2 - dis2; //求出半弦长
-            if (tangent < double.Epsilon)//只有一个交点，相切
-            {
-                rec.T = proj;
-                if (foot.Magnitude() > tMax) return false;//确认是不是最近的交点
-                rec.P = foot;
-                rec.Normal = (rec.P - Center).Normalize();//计算法线
-                rec.Material = Material;
-            }
-            else
-            { 
-                tangent = Math.Sqrt(tangent);
-                Vector2 inter = foot - ray.Direction * tangent;
-                double t = (inter - ray.Origin).Magnitude();
-                if (t > tMax) return false;//确认是不是最近的交点
-                rec.P = inter;
-                rec.T = t;
-                rec.Normal = (inter - Center).Normalize();
-                rec.Material = Material;
-            }
+            double tangent = R2 - dis2; //求出半弦长（未开根
+            tangent = Math.Sqrt(tangent);
+            Vector2 inter = ray.Origin + ray.Direction * (proj - tangent);
+            double t = (inter - ray.Origin).Magnitude();
+            if (t > tMax) return false;//确认是不是最近的交点
+            rec.P = inter;
+            rec.T = t;
+            rec.Normal = (inter - Center).Normalize();//计算法线
+            rec.Material = Material;
 
             return true;
         }

@@ -36,9 +36,10 @@ namespace OstrichRenderer
 
         public static void InitScene()
         {
-            World.List.Add(new Circle(new Vector2(250, 300), 70, new Light(new Color32(1, 0.5, 0), 1)));
-            World.List.Add(new Circle(new Vector2(150, 150), 50, new Light(new Color32(1, 1, 0), 1)));
-            World.List.Add(new Circle(new Vector2(350, 150), 50, new Light(new Color32(0.5, 1, 0), 1)));
+            //World.List.Add(new Circle(new Vector2(250, 300), 70, new Light(new Color32(1, 0.5, 0), 1)));
+            //World.List.Add(new Circle(new Vector2(150, 150), 50, new Light(new Color32(1, 1, 0), 1)));
+            //World.List.Add(new Circle(new Vector2(350, 150), 50, new Light(new Color32(0.5, 1, 0), 1)));
+            World.List.Add(new Circle(new Vector2(256, 256), 50, new Light(new Color32(1, 1, 1), 1)));
         }
 
         public static void Start()
@@ -63,7 +64,7 @@ namespace OstrichRenderer
             Color32 sum = Color32.Black;
             for (int i = 0; i < Sample; i++)
             {
-                double a = Mathd.TwoPi * (i + Random.Get()) / Sample;
+                double a = Mathd.TwoPi * (i + Random.Get()) / Sample;//抖动采样
                 sum += Trace(new Ray(new Vector2(x, y),
                     new Vector2(Math.Cos(a), Math.Sin(a))), 0);
             }
@@ -81,6 +82,7 @@ namespace OstrichRenderer
             {
                 Color32 attenuation = Color32.Black;
                 Ray r = new Ray(Vector2.Zero, Vector2.Zero);
+
                 if (depth < MaxDepth && hit.Material.Scatter(ray, hit, ref attenuation, ref r))
                     return attenuation + Trace(r, depth + 1);
                 return attenuation;

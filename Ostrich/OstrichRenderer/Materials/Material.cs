@@ -47,10 +47,17 @@ namespace OstrichRenderer.Materials
             Intensity = intensity;
         }
 
+        /// 获取反射后的射线
+        /// <param name="rayIn">入射射线</param>
+        /// <param name="record">记录</param>
+        /// <param name="attenuation">入射点的颜色</param>
+        /// <param name="scattered">反射射线</param>
+        /// <returns>是否可以反射</returns>
         public override bool Scatter(Ray rayIn, HitRecord record, ref Color32 attenuation, ref Ray scattered)
         {
             attenuation = Color * Intensity;
             if (record.T == 0) return false;
+            //给起点加上一个法线方向的偏移，防止射中原地
             scattered = new Ray(record.P + 0.0001 * record.Normal, Reflect(record.P - rayIn.Origin, record.Normal));
             return true;
         }
