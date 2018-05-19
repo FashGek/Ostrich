@@ -6,10 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 namespace OstrichRenderer
 {
+    /// 为了解决WPF恶心的bitmapsource弄的，不必理会
     static class Bitmap2WriteableBitmap
     {
         public static void BitmapToWriteableBitmap(WriteableBitmap source, Bitmap bitmap)
@@ -56,5 +58,11 @@ namespace OstrichRenderer
 
             bitmap.UnlockBits(rBitmapData);
         }
+
+        public static BitmapSource GetbBitmapSource() => Bitmap2BitmapImage(Renderer.GetBitmap());
+
+        private static BitmapSource Bitmap2BitmapImage(Bitmap bitmap) =>
+            Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
     }
 }

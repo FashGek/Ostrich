@@ -36,7 +36,7 @@ namespace OstrichRenderer
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             BitmapEncoder encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(Renderer.GetbBitmapSource()));
+            encoder.Frames.Add(BitmapFrame.Create(Bitmap2WriteableBitmap.GetbBitmapSource()));
             using (var fileStream = new System.IO.FileStream(FileNameBox.Text, System.IO.FileMode.Create))
             {
                 encoder.Save(fileStream);

@@ -35,7 +35,7 @@ namespace OstrichRenderer
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
 
-            Img.Source = Renderer.GetbBitmapSource();
+            Img.Source = Bitmap2WriteableBitmap.GetbBitmapSource();
             WriteableBitmap = new WriteableBitmap((BitmapSource) Img.Source);
         }
 

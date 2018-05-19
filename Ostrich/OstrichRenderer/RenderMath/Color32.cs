@@ -2,64 +2,64 @@
 
 namespace OstrichRenderer.RenderMath
 {
-    class Color32
+    public class Color32
     {
-        public double r, b, g, a;
+        public double R, B, G, A;
 
         public Color32(double r, double g, double b, double a = 1)
         {
-            this.r = r;
-            this.g = g;
-            this.b = b;
-            this.a = a;
+            R = r;
+            G = g;
+            B = b;
+            A = a;
         }
 
         public Color32(Color c)
         {
-            r = Mathd.Range((double)c.R / 255, 0, 1);
-            g = Mathd.Range((double)c.G / 255, 0, 1);
-            b = Mathd.Range((double)c.B / 255, 0, 1);
-            a = Mathd.Range((double)c.A / 255, 0, 1);
+            R = Mathd.Range((double)c.R / 255, 0, 1);
+            G = Mathd.Range((double)c.G / 255, 0, 1);
+            B = Mathd.Range((double)c.B / 255, 0, 1);
+            A = Mathd.Range((double)c.A / 255, 0, 1);
         }
 
         public Color32()
         {
         }
 
-        public override string ToString() => "<" + r + "," + g + "," + b + ">";
+        public override string ToString() => "<" + R + "," + G + "," + B + ">";
 
         public Color ToSystemColor()
         {
-            if (double.IsNaN(r) || double.IsNaN(g) || double.IsNaN(b) || double.IsNaN(a)) return Color.DeepPink;
-            return Color.FromArgb((int)(a * 255 + 0.5), (int)(r * 255 + 0.5), (int)(g * 255 + 0.5), (int)(b * 255 + 0.5));
+            if (double.IsNaN(R) || double.IsNaN(G) || double.IsNaN(B) || double.IsNaN(A)) return Color.DeepPink;
+            return Color.FromArgb((int)(A * 255 + 0.5), (int)(R * 255 + 0.5), (int)(G * 255 + 0.5), (int)(B * 255 + 0.5));
         }
 
         public void Reset()
         {
-            a = 0;
-            r = 0;
-            b = 0;
-            g = 0;
+            A = 0;
+            R = 0;
+            B = 0;
+            G = 0;
         }
 
         public static Color32 operator +(Color32 a, Color32 b) =>
-            new Color32(a.r + b.r, a.g + b.g, a.b + b.b, a.a + b.a);
+            new Color32(a.R + b.R, a.G + b.G, a.B + b.B, a.A + b.A);
 
         public static Color32 operator -(Color32 a, Color32 b) =>
-            new Color32(a.r - b.r, a.g - b.g, a.b - b.b, a.a - b.a);
+            new Color32(a.R - b.R, a.G - b.G, a.B - b.B, a.A - b.A);
 
         public static Color32 operator *(Color32 a, Color32 b) =>
-            new Color32(a.r * b.r, a.g * b.g, a.b * b.b, a.a * b.a);
+            new Color32(a.R * b.R, a.G * b.G, a.B * b.B, a.A * b.A);
 
-        public static Color32 operator *(Color32 a, double b) => new Color32(a.r * b, a.g * b, a.b * b, a.a * b);
+        public static Color32 operator *(Color32 a, double b) => new Color32(a.R * b, a.G * b, a.B * b, a.A * b);
 
-        public static Color32 operator *(double b, Color32 a) => new Color32(a.r * b, a.g * b, a.b * b, a.a * b);
+        public static Color32 operator *(double b, Color32 a) => new Color32(a.R * b, a.G * b, a.B * b, a.A * b);
 
-        public static Color32 operator /(Color32 a, double b) => new Color32(a.r / b, a.g / b, a.b / b, a.a / b);
+        public static Color32 operator /(Color32 a, double b) => new Color32(a.R / b, a.G / b, a.B / b, a.A / b);
 
-        public static Color32 Lerp(Color32 a, Color32 b, double t) => new Color32(a.r + (b.r - a.r) * t,
-            a.g + (b.g - a.g) * t, a.b + (b.b - a.b) * t, a.a + (b.a - a.a) * t);
+        public static Color32 Lerp(Color32 a, Color32 b, double t) => new Color32(a.R + (b.R - a.R) * t,
+            a.G + (b.G - a.G) * t, a.B + (b.B - a.B) * t, a.A + (b.A - a.A) * t);
 
-        public static Color32 black = new Color32(0, 0, 0), white = new Color32(1, 1, 1);
+        public static Color32 Black = new Color32(0, 0, 0), White = new Color32(1, 1, 1);
     }
 }

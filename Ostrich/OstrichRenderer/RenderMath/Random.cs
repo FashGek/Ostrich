@@ -2,12 +2,12 @@
 {
     class Random
     {
-        private static long seed = 1;
+        private static long Seed = 1;
 
         public static double Get()
         {
-            seed = (0x5DEECE66DL * seed + 0xB16) & 0xFFFFFFFFFFFFL;
-            return (seed >> 16) / (float)0x100000000L;
+            Seed = (0x5DEECE66DL * Seed + 0xB16) & 0xFFFFFFFFFFFFL;
+            return (Seed >> 16) / (float)0x100000000L;
         }
     }
 }

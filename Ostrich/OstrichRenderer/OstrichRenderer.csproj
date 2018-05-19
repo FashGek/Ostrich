@@ -80,6 +80,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bitmap2WriteableBitmap.cs" />
+    <Compile Include="Materials\Material.cs" />
     <Compile Include="RenderMath\Color32.cs" />
     <Compile Include="RenderMath\Mathd.cs" />
     <Compile Include="RenderMath\Random.cs" />

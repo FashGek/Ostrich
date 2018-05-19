@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using OstrichRenderer.Materials;
 using OstrichRenderer.RenderMath;
 using OstrichRenderer.Primitives;
 using OstrichRenderer.Rendering;
@@ -16,25 +17,28 @@ namespace OstrichRenderer
 {
     public class Renderer
     {
-        public static int Width, Height, Sample;
+        public static int Width, Height, Sample, MaxDepth;
         private static HitableList World = new HitableList();
 
         private static double[] Buff;
         private static int[] ChangeTimes;
         private static PointBitmap pointBitmap;
 
-        public static void Init(int width, int height, int sample)
+        public static void Init(int width, int height, int sample, int maxDepth = 4)
         {
             Width = width;
             Height = height;
             Sample = sample;
+            MaxDepth = maxDepth;
             Buff = new double[width * height * 4];
             pointBitmap = new PointBitmap(new Bitmap(width, height));
         }
 
         public static void InitScene()
         {
-            World.list.Add(new Circle(new Vector2(256, 256), 50));
+            World.List.Add(new Circle(new Vector2(250, 250), 70, new Light(new Color32(1, 0.5, 0), 1)));
+            World.List.Add(new Circle(new Vector2(150, 150), 50, new Light(new Color32(0.5, 0.5, 0), 1)));
+            World.List.Add(new Circle(new Vector2(350, 150), 50, new Light(new Color32(0.5, 1, 0), 1)));
         }
 
         public static void Start()
@@ -56,44 +60,42 @@ namespace OstrichRenderer
             
         private static void Sampling(int x, int y)
         {
-            double sum = 0;
+            Color32 sum = Color32.Black;
             for (int i = 0; i < Sample; i++)
             {
-                double a = Mathd.TwoPI * (i + Random.Get()) / Sample;
+                double a = Mathd.TwoPi * (i + Random.Get()) / Sample;
                 sum += Trace(new Ray(new Vector2(x, y),
-                    new Vector2(Math.Cos(a), Math.Sin(a))));
+                    new Vector2(Math.Cos(a), Math.Sin(a))), 0);
             }
-
-            Buff[y * Width * 4 + x * 4] = sum / Sample;
-            Buff[y * Width * 4 + x * 4 + 1] = sum / Sample;
-            Buff[y * Width * 4 + x * 4 + 2] = sum / Sample;
-            Buff[y * Width * 4 + x * 4 + 3] = 1;
+            sum = sum / Sample;
+            Buff[y * Width * 4 + x * 4] = sum.B;
+            Buff[y * Width * 4 + x * 4 + 1] = sum.G;
+            Buff[y * Width * 4 + x * 4 + 2] = sum.R;
+            Buff[y * Width * 4 + x * 4 + 3] = sum.A;
         }
 
-        private static double Trace(Ray ray)
+        private static Color32 Trace(Ray ray, int depth)
         {
             HitRecord hit = new HitRecord();
             if (World.Hit(ray, 0, double.MaxValue, ref hit))
             {
-                return 1;
+                Color32 attenuation = Color32.Black;
+                Ray r = new Ray(Vector2.Zero, Vector2.Zero);
+                if (depth < MaxDepth && hit.Material.Scatter(ray, hit, ref attenuation, ref r))
+                    return attenuation + Trace(r, depth + 1);
+                return attenuation;
             }
 
-            return 0;
+            return Color32.Black;
         }
 
         public static Bitmap GetBitmap()
         {
             pointBitmap.LockBits();
             for (int i = 0; i < Buff.Length; i++)
-                pointBitmap.SetColor(i, (byte)(Buff[i] * 255 + 0.5));
+                pointBitmap.SetColor(i, (byte) Mathd.Range(Buff[i] * 255 + 0.5, 0, 255));
 
             return pointBitmap.UnlockBits();
         }
-
-        public static BitmapSource GetbBitmapSource() => Bitmap2BitmapImage(GetBitmap());
-
-        private static BitmapSource Bitmap2BitmapImage(Bitmap bitmap) =>
-            Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
     }
 }
