@@ -81,6 +81,10 @@
     </ApplicationDefinition>
     <Compile Include="Bitmap2WriteableBitmap.cs" />
     <Compile Include="Materials\Material.cs" />
+    <Compile Include="Primitives\Intersect.cs" />
+    <Compile Include="Primitives\Line.cs" />
+    <Compile Include="Primitives\Substract.cs" />
+    <Compile Include="Primitives\Union.cs" />
     <Compile Include="RenderMath\Color32.cs" />
     <Compile Include="RenderMath\Mathd.cs" />
     <Compile Include="RenderMath\Random.cs" />

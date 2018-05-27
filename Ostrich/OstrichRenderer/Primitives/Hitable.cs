@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OstrichRenderer.Materials;
+﻿using OstrichRenderer.Materials;
 using OstrichRenderer.Rendering;
 using OstrichRenderer.RenderMath;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OstrichRenderer.Primitives
 {
@@ -17,8 +14,12 @@ namespace OstrichRenderer.Primitives
         public Vector2 P;
         /// 法线
         public Vector2 Normal;
+
+        public bool IsInside;
         /// 材质
         public Material Material;
+
+        public Hitable Object;
     }
 
 
@@ -26,10 +27,26 @@ namespace OstrichRenderer.Primitives
     {
         public string Name;
         public abstract bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec);
+        public abstract bool IsInside(Vector2 point);
+        public abstract HitRecord[] GetAllCross(Ray ray, double tMin, double tMax);
 
         public override string ToString()
         {
             return Name;
+        }
+
+        public static Union operator +(Hitable lhs, Hitable rhs) => new Union(lhs, rhs);
+        public static Union operator +(Union lhs, Hitable rhs)
+        {
+            lhs.AddItem(rhs);
+            return lhs;
+        }
+
+        public static Substract operator -(Hitable lhs, Hitable rhs) => new Substract(lhs, rhs);
+        public static Substract operator -(Substract lhs, Hitable rhs)
+        {
+            lhs.AddSubstraction(rhs);
+            return lhs;
         }
     }
 
@@ -48,10 +65,21 @@ namespace OstrichRenderer.Primitives
                 hitAnything = true;
                 closest = tempRecord.T;
                 rec = tempRecord;
-                if (rec.T == 0) return true;//这意味着在某个物体内
+                if (rec.IsInside) return true;
             }
 
             return hitAnything;
+        }
+
+        public override bool IsInside(Vector2 point) => List.Any(hitable => hitable.IsInside(point));
+        public override HitRecord[] GetAllCross(Ray ray, double tMin, double tMax)
+        {
+            List<HitRecord> records = new List<HitRecord>();
+            foreach (Hitable hitable in List)
+            {
+                records.AddRange(hitable.GetAllCross(ray, tMin, tMax));
+            }
+            return records.ToArray();
         }
     }
 }

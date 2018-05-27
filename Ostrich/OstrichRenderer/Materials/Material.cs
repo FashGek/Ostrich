@@ -56,7 +56,8 @@ namespace OstrichRenderer.Materials
         public override bool Scatter(Ray rayIn, HitRecord record, ref Color32 attenuation, ref Ray scattered)
         {
             attenuation = Color * Intensity;
-            if (record.T == 0) return false;
+            if (record.IsInside) return false;
+            if (record.P == rayIn.Origin) return false;
             //给起点加上一个法线方向的偏移，防止射中原地
             scattered = new Ray(record.P + 0.0001 * record.Normal, Reflect(record.P - rayIn.Origin, record.Normal));
             return true;

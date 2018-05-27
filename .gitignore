@@ -8,3 +8,4 @@
 *.pdb
 /Ostrich/OstrichRenderer/bin/x64/Release/OstrichRenderer.exe.config
 /Ostrich/OstrichRenderer/obj
+/Ostrich/OstrichRenderer/bin

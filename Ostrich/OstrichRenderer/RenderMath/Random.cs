@@ -2,7 +2,7 @@
 {
     class Random
     {
-        private static long Seed = 1;
+        public static long Seed = 1;
 
         public static double Get()
         {
