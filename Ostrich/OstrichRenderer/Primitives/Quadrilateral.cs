@@ -22,6 +22,12 @@ namespace OstrichRenderer.Primitives
 
         public override bool IsInside(Vector2 point) => Intersect.IsInside(point);
 
-        public override HitRecord[] GetAllCross(Ray ray, double tMin, double tMax) => Intersect.GetAllCross(ray, tMin, tMax);
+        public override HitRecord[] GetAllCross(Ray ray, double tMin, double tMax)
+        {
+            HitRecord[] hitRecords = Intersect.GetAllCross(ray, tMin, tMax);
+            for (int hit = 0; hit < hitRecords.Length; hit++)
+                hitRecords[hit].Object = this;
+            return hitRecords;
+        }
     }
 }

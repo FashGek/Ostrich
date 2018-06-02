@@ -27,6 +27,7 @@ namespace OstrichRenderer.Primitives
             else if (O1.IsInside(record2.P)) rec = record2;
             else return false;
             rec.IsInside = IsInside(ray.Origin);
+            rec.Object = this;
             return true;
         }
 

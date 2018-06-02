@@ -20,14 +20,15 @@ namespace OstrichRenderer.Primitives
         public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             bool isInside = IsInside(ray.Origin);
-            bool isopposite = ray.Direction * Normal > 0;
+            Vector2 nowNormal = isInside ? -Normal : Normal;
+            bool isopposite = ray.Direction * nowNormal > 0;
             if (isopposite && !isInside) return false;
-            Vector2 inter = CalcIntersect(ray);
+            Vector2 inter = CalcIntersect(ray) + 0.00001 * nowNormal;
             double t = (inter - ray.Origin).Magnitude();
             if (t > tMax && !double.IsInfinity(t) && !isInside) return false;
             rec.P = inter;
             rec.Material = Material;
-            rec.Normal = isInside ? -Normal : Normal;
+            rec.Normal = nowNormal;
             rec.T = isopposite ? double.MaxValue : t;
             rec.IsInside = isInside;
             rec.Object = this;
@@ -39,8 +40,7 @@ namespace OstrichRenderer.Primitives
         public override HitRecord[] GetAllCross(Ray ray, double tMin, double tMax)
         {
             HitRecord record = new HitRecord();
-            Hit(ray, tMin, tMax, ref record);
-            return new[] {record};
+            return Hit(ray, tMin, tMax, ref record) ?  new[] {record} : new HitRecord[0];
         }
 
         private static void GetABC(Vector2 p1, Vector2 p2, out double a, out double b, out double c)

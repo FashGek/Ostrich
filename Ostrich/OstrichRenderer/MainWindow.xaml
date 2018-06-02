@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="276.224" Width="240.324" Loaded="Window_Loaded">
     <Grid>
-        <TextBox x:Name="WidthBox" HorizontalAlignment="Left" Height="23" Margin="52,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="18" Text="1500"/>
-        <TextBox x:Name="HeightBox" HorizontalAlignment="Left" Height="23" Margin="52,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="18" Text="700"/>
+        <TextBox x:Name="WidthBox" HorizontalAlignment="Left" Height="23" Margin="52,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="18" Text="900"/>
+        <TextBox x:Name="HeightBox" HorizontalAlignment="Left" Height="23" Margin="52,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="18" Text="900"/>
         <TextBox x:Name="SPPBox" HorizontalAlignment="Left" Height="23" Margin="52,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="18" Text="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="7,16,0,0" TextWrapping="Wrap" Text="宽度:" VerticalAlignment="Top" FontSize="18"/>
         <TextBlock HorizontalAlignment="Left" Margin="7,43,0,0" TextWrapping="Wrap" Text="高度:" VerticalAlignment="Top" FontSize="18"/>

@@ -20,6 +20,8 @@ namespace OstrichRenderer
 
         private static long[,] Seeds;
 
+        private static long RayCount;
+
         public static void Init(int width, int height, int sample, int maxDepth = 4)
         {
             Width = width;
@@ -32,21 +34,44 @@ namespace OstrichRenderer
 
         public static void InitScene()
         {
-            //World.List.Add(new Circle(new Vector2(256, 256), 70, new Light(new Color32(1, 0.5, 0), 1,1)));
-            //World.List.Add(new Circle(new Vector2(150, 150), 50, new Light(new Color32(1, 1, 0), 1,1)));
-            //World.List.Add(new Circle(new Vector2(350, 150), 50, new Light(new Color32(0.5, 1, 0), 1,1)));
-            //World.List.Add(new Line(new Vector2(0, 0), new Vector2(512, 512), new Light(new Color32(1, 1, 1), 1,1)));
-            //World.List.Add(new Line(new Vector2(0, 512), new Vector2(512, 0), new Light(new Color32(1, 1, 1), 1,1)));
-            //World.List.Add(new Intersect(
-            //    new Line(new Vector2(0, 0), new Vector2(512, 512), new Light(new Color32(0.1, 0.5, 0.8), 1)),
-            //    new Line(new Vector2(0, 512), new Vector2(512, 0), new Light(new Color32(0.1, 0.5, 0.8), 1)),
-            //    new Line(new Vector2(512, 100), new Vector2(0, 100), new Light(new Color32(0.1, 0.5, 0.8), 1))));
-            //World.List.Add(new Intersect(
-            //    new Line(new Vector2(512, 256), new Vector2(0, 256), new Light(new Color32(0.2, 0.5, 0.8), 1)),
-            //    new Circle(new Vector2(256, 256), 100, new Light(new Color32(0.2, 0.5, 0.8), 1))));
-            //World.List.Add(new Circle(new Vector2(256, 256), 100, new Light(new Color32(1, 1, 1), 1)) -
-            //               new Circle(new Vector2(256, 260), 100, new Light(new Color32(1, 1, 1), 1)));
+            World.Add(
+                new Quadrilateral(new Vector2(200, 100), new Vector2(100, 100), new Vector2(99, 200),
+                    new Vector2(199, 200), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(300, 100), new Vector2(200, 100), new Vector2(199, 200),
+                    new Vector2(299, 200), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(200, 200), new Vector2(100, 200), new Vector2(99, 300),
+                    new Vector2(199, 300), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+            World.Add(
+                new Quadrilateral(new Vector2(700, 100), new Vector2(600, 100), new Vector2(599, 200),
+                    new Vector2(699, 200), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(800, 100), new Vector2(700, 100), new Vector2(699, 200),
+                    new Vector2(799, 200), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(800, 200), new Vector2(700, 200), new Vector2(699, 300),
+                    new Vector2(799, 300), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)));
+            World.Add(
+                new Quadrilateral(new Vector2(200, 600), new Vector2(100, 600), new Vector2(99, 700),
+                    new Vector2(199, 700), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(300, 700), new Vector2(200, 700), new Vector2(199, 800),
+                    new Vector2(299, 800), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(200, 700), new Vector2(100, 700), new Vector2(99, 800),
+                    new Vector2(199, 800), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)));
+            World.Add(
+                new Quadrilateral(new Vector2(700, 700), new Vector2(600, 700), new Vector2(599, 800),
+                    new Vector2(699, 800), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(800, 600), new Vector2(700, 600), new Vector2(699, 700),
+                    new Vector2(799, 700), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(800, 700), new Vector2(700, 700), new Vector2(699, 800),
+                    new Vector2(799, 800), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
 
+            World.Add(new Circle(new Vector2(450, 450), 200, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
+                      new Circle(new Vector2(250, 450), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
+                      new Circle(new Vector2(650, 450), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
+                      new Circle(new Vector2(450, 250), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
+                      new Circle(new Vector2(450, 650), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+        }
+
+        /* FXM 1500 * 700
+        
             World.Add(new Quadrilateral(new Vector2(150, 100), new Vector2(67, 84), new Vector2(32, 576),
                 new Vector2(118, 580), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
             World.Add(new Quadrilateral(new Vector2(322, 81), new Vector2(161, 103), new Vector2(169, 176),
@@ -80,7 +105,8 @@ namespace OstrichRenderer
 
             World.Add(new Quadrilateral(new Vector2(1358, 115), new Vector2(1286, 121), new Vector2(1389, 619),
                 new Vector2(1465, 604), new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
-        }
+
+        */
 
         /*
          
@@ -99,6 +125,7 @@ namespace OstrichRenderer
 
         public static void Start()
         {
+            Console.WriteLine();
             InitScene();
 #if  DEBUG
             Seeds = new long[Width, Height];
@@ -112,24 +139,25 @@ namespace OstrichRenderer
             stopwatch.Start();
             //for (int y = 0; y < Height; y++)
             //{
-            //多线程加速
-            Parallel.For(0, Height, y =>
+                //多线程加速
+                Parallel.For(0, Height, y =>
                 {
                     for (int x = 0; x < Width; x++)
+                {
+                    if (x == 515 && y == 276)
                     {
-                        if (x == 181 && y == 320)
-                        {
 
-                        }
-#if DEBUG
-                        Seeds[x, y] = Random.Seed;
-#endif
-                        Sampling(x, y);
                     }
+#if DEBUG
+                    Seeds[x, y] = Random.Seed;
+#endif
+                    Sampling(x, y);
+                }
                 });
             //}
             stopwatch.Stop();
             Console.WriteLine(stopwatch.ElapsedMilliseconds / 1000f);
+            Console.WriteLine((RayCount / 1000000.0 / (stopwatch.ElapsedMilliseconds / 1000d)).ToString("F1") + "MRays/s");
         }
 
         private static void Sampling(int x, int y)
@@ -155,6 +183,7 @@ namespace OstrichRenderer
         private static Color32 Trace(Ray ray, int depth, bool debug = false)
         {
             HitRecord hit = new HitRecord();
+            RayCount++;
             if (World.Hit(ray, 0, double.MaxValue, ref hit))
             {
 #if DEBUG

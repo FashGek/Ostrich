@@ -5,6 +5,7 @@ using OstrichRenderer.RenderMath;
 
 namespace OstrichRenderer.Primitives
 {
+    ///相交判断没写好，有bug
     /// 由于在堆上的内存分配较频繁，GC消耗大
     public class Substract : Hitable
     {
@@ -40,7 +41,7 @@ namespace OstrichRenderer.Primitives
                     validRecords.Add(records[i]);
             }
             validRecords = validRecords.Where(hitRecord => Minuend.IsInside(hitRecord.P)).ToList();
-            if (!Substraction.All(hit => hit.IsInside(mrecord.P)))
+            if (!Substraction.Any(hit => hit.IsInside(mrecord.P)))
                 validRecords.Add(mrecord);
             if (validRecords.Count == 0) return false;
 
