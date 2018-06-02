@@ -34,40 +34,8 @@ namespace OstrichRenderer
 
         public static void InitScene()
         {
-            World.Add(
-                new Quadrilateral(new Vector2(200, 100), new Vector2(100, 100), new Vector2(99, 200),
-                    new Vector2(199, 200), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
-                new Quadrilateral(new Vector2(300, 100), new Vector2(200, 100), new Vector2(199, 200),
-                    new Vector2(299, 200), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
-                new Quadrilateral(new Vector2(200, 200), new Vector2(100, 200), new Vector2(99, 300),
-                    new Vector2(199, 300), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
-            World.Add(
-                new Quadrilateral(new Vector2(700, 100), new Vector2(600, 100), new Vector2(599, 200),
-                    new Vector2(699, 200), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
-                new Quadrilateral(new Vector2(800, 100), new Vector2(700, 100), new Vector2(699, 200),
-                    new Vector2(799, 200), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
-                new Quadrilateral(new Vector2(800, 200), new Vector2(700, 200), new Vector2(699, 300),
-                    new Vector2(799, 300), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)));
-            World.Add(
-                new Quadrilateral(new Vector2(200, 600), new Vector2(100, 600), new Vector2(99, 700),
-                    new Vector2(199, 700), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
-                new Quadrilateral(new Vector2(300, 700), new Vector2(200, 700), new Vector2(199, 800),
-                    new Vector2(299, 800), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
-                new Quadrilateral(new Vector2(200, 700), new Vector2(100, 700), new Vector2(99, 800),
-                    new Vector2(199, 800), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)));
-            World.Add(
-                new Quadrilateral(new Vector2(700, 700), new Vector2(600, 700), new Vector2(599, 800),
-                    new Vector2(699, 800), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
-                new Quadrilateral(new Vector2(800, 600), new Vector2(700, 600), new Vector2(699, 700),
-                    new Vector2(799, 700), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
-                new Quadrilateral(new Vector2(800, 700), new Vector2(700, 700), new Vector2(699, 800),
-                    new Vector2(799, 800), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
-
-            World.Add(new Circle(new Vector2(450, 450), 200, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
-                      new Circle(new Vector2(250, 450), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
-                      new Circle(new Vector2(650, 450), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
-                      new Circle(new Vector2(450, 250), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
-                      new Circle(new Vector2(450, 650), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+            World.Add(new Circle(new Vector2(192, 256), 128, new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) -
+                      new Circle(new Vector2(320, 256), 128, new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
         }
 
         /* FXM 1500 * 700
@@ -123,8 +91,48 @@ namespace OstrichRenderer
 
         */
 
+        /*
+         
+            World.Add(
+                new Quadrilateral(new Vector2(200, 100), new Vector2(100, 100), new Vector2(99, 200),
+                    new Vector2(199, 200), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(300, 100), new Vector2(200, 100), new Vector2(199, 200),
+                    new Vector2(299, 200), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(200, 200), new Vector2(100, 200), new Vector2(99, 300),
+                    new Vector2(199, 300), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+            World.Add(
+                new Quadrilateral(new Vector2(700, 100), new Vector2(600, 100), new Vector2(599, 200),
+                    new Vector2(699, 200), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(800, 100), new Vector2(700, 100), new Vector2(699, 200),
+                    new Vector2(799, 200), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(800, 200), new Vector2(700, 200), new Vector2(699, 300),
+                    new Vector2(799, 300), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)));
+            World.Add(
+                new Quadrilateral(new Vector2(200, 600), new Vector2(100, 600), new Vector2(99, 700),
+                    new Vector2(199, 700), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(300, 700), new Vector2(200, 700), new Vector2(199, 800),
+                    new Vector2(299, 800), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(200, 700), new Vector2(100, 700), new Vector2(99, 800),
+                    new Vector2(199, 800), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)));
+            World.Add(
+                new Quadrilateral(new Vector2(700, 700), new Vector2(600, 700), new Vector2(599, 800),
+                    new Vector2(699, 800), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(800, 600), new Vector2(700, 600), new Vector2(699, 700),
+                    new Vector2(799, 700), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) +
+                new Quadrilateral(new Vector2(800, 700), new Vector2(700, 700), new Vector2(699, 800),
+                    new Vector2(799, 800), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(450, 450), 200, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
+                      new Circle(new Vector2(250, 450), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
+                      new Circle(new Vector2(650, 450), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
+                      new Circle(new Vector2(450, 250), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)) -
+                      new Circle(new Vector2(450, 650), 100, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+        */
+
         public static void Start()
         {
+            RayCount = 0;
             Console.WriteLine();
             InitScene();
 #if  DEBUG

@@ -23,7 +23,7 @@ namespace OstrichRenderer.Primitives
             Vector2 nowNormal = isInside ? -Normal : Normal;
             bool isopposite = ray.Direction * nowNormal > 0;
             if (isopposite && !isInside) return false;
-            Vector2 inter = CalcIntersect(ray) + 0.00001 * nowNormal;
+            Vector2 inter = CalcIntersect(ray);
             double t = (inter - ray.Origin).Magnitude();
             if (t > tMax && !double.IsInfinity(t) && !isInside) return false;
             rec.P = inter;

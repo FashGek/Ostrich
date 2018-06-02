@@ -22,11 +22,11 @@ namespace OstrichRenderer.Primitives
             bool b1 = O1.Hit(ray, tMin, tMax, ref record1);
             bool b2 = O2.Hit(ray, tMin, tMax, ref record2);
 
-            if (!(b1 || b2)) return false;
+            if (!(b1 || b2)) return false;//如果与两个物体都不相交才视为与整个物体无交点
 
             if (!b1) rec = record2;
             else if (!b2) rec = record1;
-            else rec = record1.T > record2.T ? record2 : record1;
+            else rec = record1.T > record2.T ? record2 : record1;//如果与两个物体都有交点，选最近的那个
 
             rec.IsInside = IsInside(ray.Origin);
             rec.Object = this;

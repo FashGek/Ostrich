@@ -19,9 +19,9 @@ namespace OstrichRenderer.Primitives
         {
             HitRecord record1 = new HitRecord();
             HitRecord record2 = new HitRecord();
-            if (!(O1.Hit(ray, tMin, tMax, ref record1) && O2.Hit(ray, tMin, tMax, ref record2))) return false;
+            if (!(O1.Hit(ray, tMin, tMax, ref record1) && O2.Hit(ray, tMin, tMax, ref record2))) return false;//只要与其中一个物体不相交，就是与交集没交点
 
-            if (O2.IsInside(record1.P) && O1.IsInside(record2.P))
+            if (O2.IsInside(record1.P) && O1.IsInside(record2.P))//如果与两个都相交，则选最近的
                 rec = record1.T > record2.T ? record2 : record1;
             else if (O2.IsInside(record1.P)) rec = record1;
             else if (O1.IsInside(record2.P)) rec = record2;
