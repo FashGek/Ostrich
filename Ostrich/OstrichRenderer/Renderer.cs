@@ -3,6 +3,7 @@ using OstrichRenderer.Primitives;
 using OstrichRenderer.Rendering;
 using OstrichRenderer.RenderMath;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
 using Random = OstrichRenderer.RenderMath.Random;
@@ -18,7 +19,6 @@ namespace OstrichRenderer
         private static PointBitmap PointBitmap;
 
         private static long[,] Seeds;
-        private const bool Debug = true;
 
         public static void Init(int width, int height, int sample, int maxDepth = 4)
         {
@@ -32,11 +32,11 @@ namespace OstrichRenderer
 
         public static void InitScene()
         {
-            //World.List.Add(new Circle(new Vector2(256, 256), 70, new Light(new Color32(1, 0.5, 0), 1)));
-            //World.List.Add(new Circle(new Vector2(150, 150), 50, new Light(new Color32(1, 1, 0), 1)));
-            //World.List.Add(new Circle(new Vector2(350, 150), 50, new Light(new Color32(0.5, 1, 0), 1)));
-            //World.List.Add(new Line(new Vector2(0, 0), new Vector2(512, 512), new Light(new Color32(1, 1, 1), 1)));
-            //World.List.Add(new Line(new Vector2(0, 512), new Vector2(512, 0), new Light(new Color32(1, 1, 1), 1)));
+            //World.List.Add(new Circle(new Vector2(256, 256), 70, new Light(new Color32(1, 0.5, 0), 1,1)));
+            //World.List.Add(new Circle(new Vector2(150, 150), 50, new Light(new Color32(1, 1, 0), 1,1)));
+            //World.List.Add(new Circle(new Vector2(350, 150), 50, new Light(new Color32(0.5, 1, 0), 1,1)));
+            //World.List.Add(new Line(new Vector2(0, 0), new Vector2(512, 512), new Light(new Color32(1, 1, 1), 1,1)));
+            //World.List.Add(new Line(new Vector2(0, 512), new Vector2(512, 0), new Light(new Color32(1, 1, 1), 1,1)));
             //World.List.Add(new Intersect(
             //    new Line(new Vector2(0, 0), new Vector2(512, 512), new Light(new Color32(0.1, 0.5, 0.8), 1)),
             //    new Line(new Vector2(0, 512), new Vector2(512, 0), new Light(new Color32(0.1, 0.5, 0.8), 1)),
@@ -46,56 +46,104 @@ namespace OstrichRenderer
             //    new Circle(new Vector2(256, 256), 100, new Light(new Color32(0.2, 0.5, 0.8), 1))));
             //World.List.Add(new Circle(new Vector2(256, 256), 100, new Light(new Color32(1, 1, 1), 1)) -
             //               new Circle(new Vector2(256, 260), 100, new Light(new Color32(1, 1, 1), 1)));
-            World.List.Add(new Line(new Vector2(512, 512), new Vector2(0, 512), new Light(Color32.Black, 1)) -
-                           new Circle(new Vector2(512, 512), 400, new Light(Color32.Black, 1)));
-            World.List.Add(new Circle(new Vector2(350, 200), 100, new Light(Color32.White, 1.5)));
+
+            World.Add(new Quadrilateral(new Vector2(150, 100), new Vector2(67, 84), new Vector2(32, 576),
+                new Vector2(118, 580), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+            World.Add(new Quadrilateral(new Vector2(322, 81), new Vector2(161, 103), new Vector2(169, 176),
+                new Vector2(343, 157), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+            World.Add(new Quadrilateral(new Vector2(323, 291), new Vector2(155, 300), new Vector2(149, 379),
+                new Vector2(320, 375), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(416, 98), 55, new Light(new Color32(0.75, 0.75, 0.5), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(516, 129), new Vector2(448, 172), new Vector2(647, 569),
+                          new Vector2(721, 534), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) + new Quadrilateral(
+                          new Vector2(746, 153), new Vector2(635, 100), new Vector2(412, 536),
+                          new Vector2(455, 581), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(738, 628), 55, new Light(new Color32(0.5, 0.75, 0.75), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(927, 128), new Vector2(862, 118), new Vector2(758, 540),
+                new Vector2(826, 569), new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(931, 73), 49, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(993, 112), new Vector2(943, 129), new Vector2(1045, 585),
+                new Vector2(1120, 572), new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(1122, 635), 47, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(1278, 123), new Vector2(1208, 120), new Vector2(1130, 571),
+                new Vector2(1187, 592), new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(1284, 73), 44, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(1358, 115), new Vector2(1286, 121), new Vector2(1389, 619),
+                new Vector2(1465, 604), new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
         }
+
+        /*
+         
+            World.Add(new Circle(new Vector2(512, 512), 450, new Light(new Color32(0.9, 0.67, 0.3), 1, 0.7)) -
+                      new Circle(new Vector2(512, 512), 440, new Light(new Color32(1, 0.85, 0.3), 1, 0.7)));
+
+         */
+
+        /*Milo 1024*1024
+        
+            World.List.Add(new Line(new Vector2(512, 512), new Vector2(0, 512), new Light(Color32.Black, 1, 0.4)) -
+                           new Circle(new Vector2(512, 512), 400, new Light(Color32.Black, 1, 0.4)));
+            World.List.Add(new Circle(new Vector2(350, 200), 100, new Light(Color32.White, 4, 0.4)));
+
+        */
 
         public static void Start()
         {
             InitScene();
+#if  DEBUG
+            Seeds = new long[Width, Height];
+#endif
             new Task(Render).Start();
-            if (Debug)
-                Seeds = new long[Width, Height];
         }
 
         private static void Render()
         {
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            //for (int y = 0; y < Height; y++)
+            //{
+            //多线程加速
+            Parallel.For(0, Height, y =>
                 {
-                    if (x == 586 && y == 919)
+                    for (int x = 0; x < Width; x++)
                     {
-                        
-                    }
-                    if (Debug)
+                        if (x == 181 && y == 320)
+                        {
+
+                        }
+#if DEBUG
                         Seeds[x, y] = Random.Seed;
-                    Sampling(x, y);
-                }
-            }
+#endif
+                        Sampling(x, y);
+                    }
+                });
+            //}
+            stopwatch.Stop();
+            Console.WriteLine(stopwatch.ElapsedMilliseconds / 1000f);
         }
-            
+
         private static void Sampling(int x, int y)
         {
             Color32 sum = Color32.Black;
             for (int i = 0; i < Sample; i++)
             {
-                if (x == 66 && y == 26)
+                if (x == 255 && y == 0)
                 {
-                    
+
                 }
-                if (x == 48 && y == 59)
-                {
-                    sum += Trace(new Ray(new Vector2(x, y),
-                        new Vector2(Math.Cos(Mathd.Pi / 3 ), Math.Sin(Mathd.Pi / 3 ))), 0);
-                }
-                else
-                {
-                    double a = Mathd.TwoPi * (i + Random.Get()) / Sample;//抖动采样
-                    sum += Trace(new Ray(new Vector2(x, y),
-                        new Vector2(Math.Cos(a), Math.Sin(a))), 0);
-                }
+                double a = Mathd.TwoPi * (i + Random.Get()) / Sample;//抖动采样
+                sum += Trace(new Ray(new Vector2(x, y),
+                    new Vector2(Math.Cos(a), Math.Sin(a))), 0);
             }
             sum = sum / Sample;
             Buff[y * Width * 4 + x * 4] = sum.B;
@@ -109,32 +157,34 @@ namespace OstrichRenderer
             HitRecord hit = new HitRecord();
             if (World.Hit(ray, 0, double.MaxValue, ref hit))
             {
-                if (Debug && debug)
-                    DrawLine(ray.Origin, hit.P);
-
+#if DEBUG
+                if(debug) DrawLine(ray.Origin, hit.P);
+#endif
                 Color32 attenuation = Color32.Black;
                 Ray r = new Ray(Vector2.Zero, Vector2.Zero);
 
                 if (depth < MaxDepth && hit.Material.Scatter(ray, hit, ref attenuation, ref r))
-                    return attenuation + Trace(r, depth + 1, debug);
-                return attenuation;
+                    return attenuation + hit.Material.Reflectivity * Trace(r, depth + 1, debug);
                 return attenuation;
             }
-            if (Debug && debug)
+#if DEBUG
+            if (debug)
                 DrawLine(ray.Origin, ray.Origin + ray.NormalDirection * Width);
+#endif
 
             return Color32.Black;
         }
 
         public static void DrawRoute(int x, int y)
         {
-            if (!Debug) return;
+#if DEBUG
             Random.Seed = Seeds[x, y];
             for (int i = 0; i < Sample; i++)
             {
                 double a = Mathd.TwoPi * (i + Random.Get()) / Sample;
                 Trace(new Ray(new Vector2(x, y), new Vector2(Math.Cos(a), Math.Sin(a))), 0, true);
             }
+#endif
         }
 
         private static void DrawLine(Vector2 s, Vector2 e)
@@ -150,9 +200,9 @@ namespace OstrichRenderer
                 if (e2 > -dx) { err -= dy; x0 += sx; }
                 if (e2 < dy) { err += dx; y0 += sy; }
                 if (x0 < -Width || x0 >= Width * 2) return;
-                if (y0 < -Width || y0 >= Width * 2) return;
+                if (y0 < -Height || y0 >= Height * 2) return;
                 if (x0 < 0 || x0 >= Width) continue;
-                if (y0 < 0 || y0 >= Width) continue;
+                if (y0 < 0 || y0 >= Height) continue;
                 Buff[y0 * Width * 4 + x0 * 4] = 0;
                 Buff[y0 * Width * 4 + x0 * 4 + 1] = 0;
                 Buff[y0 * Width * 4 + x0 * 4 + 2] = 255;

@@ -7,59 +7,35 @@ namespace OstrichRenderer.Primitives
 {
     public class Intersect : Hitable
     {
-        private readonly Hitable[] Hitables;
+        private readonly Hitable O1, O2;
 
-        public Intersect(params Hitable[] hitable)
+        public Intersect(Hitable o1, Hitable o2)
         {
-            Hitables = hitable;
+            O1 = o1;
+            O2 = o2;
         }
 
         public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
-            HitRecord[] records = new HitRecord[Hitables.Length];
-            HitRecord record = new HitRecord();
-            for (int i = 0; i < Hitables.Length; i++)
-            {
-                if (!Hitables[i].Hit(ray, tMin, tMax, ref record)) return false;
-                records[i] = record;
-            }
+            HitRecord record1 = new HitRecord();
+            HitRecord record2 = new HitRecord();
+            if (!(O1.Hit(ray, tMin, tMax, ref record1) && O2.Hit(ray, tMin, tMax, ref record2))) return false;
 
-            List<HitRecord> validRecords = new List<HitRecord>();
-            for (int i = 0; i < records.Length; i++)
-            {
-                bool inside = true;
-                for (int a = 0; a < records.Length; a++)
-                {
-                    if (i == a) continue;
-                    if (Hitables[a].IsInside(records[i].P)) continue;
-                    inside = false;
-                    break;
-                }
-                if (inside)
-                    validRecords.Add(records[i]);
-            }
-            if (validRecords.Count == 0) return false;
-
-            double mint = double.MaxValue;
-            foreach (HitRecord validRecord in validRecords)
-                if (validRecord.T < mint)
-                {
-                    mint = validRecord.T;
-                    rec = validRecord;
-                }
+            if (O2.IsInside(record1.P) && O1.IsInside(record2.P))
+                rec = record1.T > record2.T ? record2 : record1;
+            else if (O2.IsInside(record1.P)) rec = record1;
+            else if (O1.IsInside(record2.P)) rec = record2;
+            else return false;
             rec.IsInside = IsInside(ray.Origin);
-            rec.Object = this;
             return true;
         }
 
-        public override bool IsInside(Vector2 point) => Hitables.All(hitable => hitable.IsInside(point));
+        public override bool IsInside(Vector2 point) => O1.IsInside(point) && O2.IsInside(point);
         public override HitRecord[] GetAllCross(Ray ray, double tMin, double tMax)
         {
             List<HitRecord> records = new List<HitRecord>();
-            foreach (Hitable hitable in Hitables)
-            {
-                records.AddRange(hitable.GetAllCross(ray, tMin, tMax));
-            }
+            records.AddRange(O1.GetAllCross(ray, tMin, tMax));
+            records.AddRange(O2.GetAllCross(ray, tMin, tMax));
             return records.ToArray();
         }
 
@@ -80,6 +56,52 @@ namespace OstrichRenderer.Primitives
 
         public override bool IsInside(Vector2 point) => O1.IsInside(point) && O2.IsInside(point);
 
+         */
+
+        /*
+         
+                 public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
+        {
+            bool isInside = IsInside(ray.Origin);
+            HitRecord[] records = new HitRecord[Hitables.Length];
+            HitRecord record = new HitRecord();
+            for (int i = 0; i < Hitables.Length; i++)
+            {
+                if (!Hitables[i].Hit(ray, tMin, tMax, ref record)) return false;
+                records[i] = record;
+            }
+
+            List<HitRecord> validRecords = new List<HitRecord>();
+            for (int i = 0; i < records.Length; i++)
+            {
+                bool inside = true;
+                for (int a = 0; a < records.Length; a++)
+                {
+                    if (i == a) continue;
+                    if (Hitables[a].IsInside(records[i].P)) continue;
+                    inside = false;
+                    break;
+                }
+                if (inside || isInside)
+                    validRecords.Add(records[i]);
+            }
+            if (validRecords.Count == 0) return false;
+
+            double mint = validRecords[0].T;
+            rec = validRecords[0];
+            foreach (HitRecord validRecord in validRecords)
+                if (validRecord.T <= mint)
+                {
+                    mint = validRecord.T;
+                    rec = validRecord;
+                }
+            rec.IsInside = isInside;
+            rec.Object = this;
+            return true;
+        }
+
+        public override bool IsInside(Vector2 point) => Hitables.All(hitable => hitable.IsInside(point));
+         
          */
     }
 }

@@ -20,14 +20,15 @@ namespace OstrichRenderer.Primitives
         public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             bool isInside = IsInside(ray.Origin);
-            if (!(ray.Direction * Normal < 0) && !isInside) return false;
+            bool isopposite = ray.Direction * Normal > 0;
+            if (isopposite && !isInside) return false;
             Vector2 inter = CalcIntersect(ray);
             double t = (inter - ray.Origin).Magnitude();
-            if (t > tMax) return false;
+            if (t > tMax && !double.IsInfinity(t) && !isInside) return false;
             rec.P = inter;
             rec.Material = Material;
             rec.Normal = isInside ? -Normal : Normal;
-            rec.T = isInside ? double.MaxValue : t;
+            rec.T = isopposite ? double.MaxValue : t;
             rec.IsInside = isInside;
             rec.Object = this;
             return true;

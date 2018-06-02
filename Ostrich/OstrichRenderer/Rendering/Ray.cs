@@ -2,7 +2,7 @@
 
 namespace OstrichRenderer.Rendering
 {
-    public class Ray
+    public struct Ray
     {
         public readonly Vector2 Origin, Direction, NormalDirection;
 

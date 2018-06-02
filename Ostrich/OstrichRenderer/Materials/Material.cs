@@ -12,6 +12,8 @@ namespace OstrichRenderer.Materials
 {
     public abstract class Material
     {
+        public double Reflectivity;
+
         public abstract bool Scatter(Ray rayIn, HitRecord record, ref Color32 attenuation, ref Ray scattered);
 
         public virtual Color32 Emitted(double u, double v, Vector2 p) => new Color32(0, 0, 0);
@@ -39,12 +41,14 @@ namespace OstrichRenderer.Materials
     {
         /// 强度
         public double Intensity;
+
         public Color32 Color;
 
-        public Light(Color32 color, double intensity)
+        public Light(Color32 color, double intensity, double reflectivity)
         {
             Color = color;
             Intensity = intensity;
+            Reflectivity = reflectivity;
         }
 
         /// 获取反射后的射线

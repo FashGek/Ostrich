@@ -5,6 +5,7 @@ using OstrichRenderer.RenderMath;
 
 namespace OstrichRenderer.Primitives
 {
+    /// 由于在堆上的内存分配较频繁，GC消耗大
     public class Substract : Hitable
     {
         private readonly Hitable Minuend;

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace OstrichRenderer
@@ -8,7 +10,7 @@ namespace OstrichRenderer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Preview Preview;
+        private Preview _preview;
 
         public MainWindow()
         {
@@ -22,13 +24,13 @@ namespace OstrichRenderer
         private void Render_Click(object sender, RoutedEventArgs e)
         {
             Renderer.Init(int.Parse(WidthBox.Text), int.Parse(HeightBox.Text), int.Parse(SPPBox.Text));
-            Preview = new Preview();
-            Preview.Show();
-            Preview.Closed += Preview_Closed;
+            _preview = new Preview();
+            _preview.Show();
+            _preview.Closed += Preview_Closed;
             Render.IsEnabled = false;
         }
 
-        private void Preview_Closed(object sender, System.EventArgs e)
+        private void Preview_Closed(object sender, EventArgs e)
         {
             Render.IsEnabled = true;
         }
@@ -37,7 +39,8 @@ namespace OstrichRenderer
         {
             BitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(Bitmap2WriteableBitmap.GetbBitmapSource()));
-            using (var fileStream = new System.IO.FileStream(FileNameBox.Text, System.IO.FileMode.Create))
+            using (FileStream fileStream = new FileStream(
+                DateTime.Now.ToString("yyyy-M-d-hh-mm-ss") + ".png", FileMode.Create))
             {
                 encoder.Save(fileStream);
             }

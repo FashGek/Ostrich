@@ -36,11 +36,6 @@ namespace OstrichRenderer.Primitives
         }
 
         public static Union operator +(Hitable lhs, Hitable rhs) => new Union(lhs, rhs);
-        public static Union operator +(Union lhs, Hitable rhs)
-        {
-            lhs.AddItem(rhs);
-            return lhs;
-        }
 
         public static Substract operator -(Hitable lhs, Hitable rhs) => new Substract(lhs, rhs);
         public static Substract operator -(Substract lhs, Hitable rhs)
@@ -56,10 +51,10 @@ namespace OstrichRenderer.Primitives
 
         public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
-            var tempRecord = new HitRecord();
-            var hitAnything = false;
-            var closest = tMax;
-            foreach (var h in List)
+            HitRecord tempRecord = new HitRecord();
+            bool hitAnything = false;
+            double closest = tMax;
+            foreach (Hitable h in List)
             {
                 if (!h.Hit(ray, tMin, closest, ref tempRecord)) continue;
                 hitAnything = true;
@@ -81,5 +76,7 @@ namespace OstrichRenderer.Primitives
             }
             return records.ToArray();
         }
+
+        public void Add(Hitable item) => List.Add(item);
     }
 }
