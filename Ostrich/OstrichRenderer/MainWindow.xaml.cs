@@ -23,7 +23,7 @@ namespace OstrichRenderer
 
         private void Render_Click(object sender, RoutedEventArgs e)
         {
-            Renderer.Init(int.Parse(WidthBox.Text), int.Parse(HeightBox.Text), int.Parse(SPPBox.Text));
+            Renderer.Init(int.Parse(WidthBox.Text), int.Parse(HeightBox.Text));
             _preview = new Preview();
             _preview.Show();
             _preview.Closed += Preview_Closed;

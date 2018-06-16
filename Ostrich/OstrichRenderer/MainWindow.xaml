@@ -7,12 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="276.224" Width="240.324" Loaded="Window_Loaded">
     <Grid>
-        <TextBox x:Name="WidthBox" HorizontalAlignment="Left" Height="23" Margin="52,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="18" Text="900"/>
-        <TextBox x:Name="HeightBox" HorizontalAlignment="Left" Height="23" Margin="52,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="18" Text="900"/>
-        <TextBox x:Name="SPPBox" HorizontalAlignment="Left" Height="23" Margin="52,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="18" Text="1"/>
+        <TextBox x:Name="WidthBox" HorizontalAlignment="Left" Height="23" Margin="52,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="18" Text="1500"/>
+        <TextBox x:Name="HeightBox" HorizontalAlignment="Left" Height="23" Margin="52,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="18" Text="700"/>
         <TextBlock HorizontalAlignment="Left" Margin="7,16,0,0" TextWrapping="Wrap" Text="宽度:" VerticalAlignment="Top" FontSize="18"/>
         <TextBlock HorizontalAlignment="Left" Margin="7,43,0,0" TextWrapping="Wrap" Text="高度:" VerticalAlignment="Top" FontSize="18"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,71,0,0" TextWrapping="Wrap" Text="SPP:" VerticalAlignment="Top" FontSize="18"/>
         <Button x:Name="Render" Content="渲染" Margin="0,0,0,50" VerticalAlignment="Bottom" Width="76" FontSize="18" Click="Render_Click"/>
         <ProgressBar x:Name="ProgressBar" Height="23" Margin="0,203,0,0" VerticalAlignment="Top" Width="212"/>
         <Button x:Name="SaveButton" Content="保存" Margin="0,0,0,82" VerticalAlignment="Bottom" Width="76" FontSize="18" Click="SaveButton_Click"/>

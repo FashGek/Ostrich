@@ -15,29 +15,25 @@ namespace OstrichRenderer.Primitives
             O2 = o2;
         }
 
-        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
-        {
-            HitRecord record1 = new HitRecord();
-            HitRecord record2 = new HitRecord();
-            if (!(O1.Hit(ray, tMin, tMax, ref record1) && O2.Hit(ray, tMin, tMax, ref record2))) return false;//只要与其中一个物体不相交，就是与交集没交点
-
-            if (O2.IsInside(record1.P) && O1.IsInside(record2.P))//如果与两个都相交，则选最近的
-                rec = record1.T > record2.T ? record2 : record1;
-            else if (O2.IsInside(record1.P)) rec = record1;
-            else if (O1.IsInside(record2.P)) rec = record2;
-            else return false;
-            rec.IsInside = IsInside(ray.Origin);
-            rec.Object = this;
-            return true;
-        }
-
         public override bool IsInside(Vector2 point) => O1.IsInside(point) && O2.IsInside(point);
-        public override HitRecord[] GetAllCross(Ray ray, double tMin, double tMax)
+        public override bool IsInside(Vector2 point, out Point p) => O1.IsInside(point, out p) && O2.IsInside(point, out p);
+
+        public override bool IsOnBoundary(Vector2 point) => O1.IsOnBoundary(point) && O2.IsOnBoundary(point);
+
+        public override List<LineSeg> GetLineSegs()
         {
-            List<HitRecord> records = new List<HitRecord>();
-            records.AddRange(O1.GetAllCross(ray, tMin, tMax));
-            records.AddRange(O2.GetAllCross(ray, tMin, tMax));
-            return records.ToArray();
+            List<LineSeg> lineSeg1 = new List<LineSeg>();
+            List<LineSeg> lineSeg2 = new List<LineSeg>();
+            List<LineSeg> lineSeg = new List<LineSeg>();
+            lineSeg1.AddRange(O1.GetLineSegs());
+            lineSeg1 = LineSeg.DivideByIntersection(lineSeg1);
+            for (int i = 0; i < lineSeg1.Count; i++)
+                if (O2.IsInside(lineSeg1[i].Position)) lineSeg.Add(lineSeg1[i]);
+            lineSeg2.AddRange(O2.GetLineSegs());
+            lineSeg2 = LineSeg.DivideByIntersection(lineSeg2);
+            for (int i = 0; i < lineSeg2.Count; i++)
+                if (O1.IsInside(lineSeg2[i].Position)) lineSeg.Add(lineSeg2[i]);
+            return lineSeg;
         }
 
         /*

@@ -9,8 +9,8 @@ namespace OstrichRenderer.Rendering
         public Ray(Vector2 o, Vector2 d)
         {
             Origin = o;
-            Direction = d.Normalize();
-            NormalDirection = Direction;
+            Direction = d;
+            NormalDirection = d.Normalize();
         }
     }
 }

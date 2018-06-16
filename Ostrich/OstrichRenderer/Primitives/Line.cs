@@ -1,4 +1,6 @@
-﻿using OstrichRenderer.Materials;
+﻿using System;
+using System.Collections.Generic;
+using OstrichRenderer.Materials;
 using OstrichRenderer.Rendering;
 using OstrichRenderer.RenderMath;
 
@@ -7,41 +9,33 @@ namespace OstrichRenderer.Primitives
     public class Line : Hitable
     {
         private readonly double A, B, C;
-        private readonly Vector2 Normal;
-        private readonly Material Material;
+        private readonly Vector2 Normal, P1, P2;
+        private readonly ushort Material;
 
-        public Line(Vector2 p1, Vector2 p2, Material material)
+        public Line(Vector2 p1, Vector2 p2, ushort material)
         {
+            P1 = p1;
+            P2 = p2;
             GetABC(p1, p2, out A, out B, out C);
             Normal = new Vector2(-A, -B).Normalize();
             Material = material;
         }
 
-        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
-        {
-            bool isInside = IsInside(ray.Origin);
-            Vector2 nowNormal = isInside ? -Normal : Normal;
-            bool isopposite = ray.Direction * nowNormal > 0;
-            if (isopposite && !isInside) return false;
-            Vector2 inter = CalcIntersect(ray);
-            double t = (inter - ray.Origin).Magnitude();
-            if (t > tMax && !double.IsInfinity(t) && !isInside) return false;
-            rec.P = inter;
-            rec.Material = Material;
-            rec.Normal = nowNormal;
-            rec.T = isopposite ? double.MaxValue : t;
-            rec.IsInside = isInside;
-            rec.Object = this;
-            return true;
-        }
-
         public override bool IsInside(Vector2 point) => A * point.X + B * point.Y + C >= 0;
-
-        public override HitRecord[] GetAllCross(Ray ray, double tMin, double tMax)
+        public override bool IsInside(Vector2 point, out Point p)
         {
-            HitRecord record = new HitRecord();
-            return Hit(ray, tMin, tMax, ref record) ?  new[] {record} : new HitRecord[0];
+            if (A * point.X + B * point.Y + C >= 0)
+            {
+                p = new Point(Material, point);
+                return true;
+            }
+            p = new Point();
+            return false;
         }
+
+        public override bool IsOnBoundary(Vector2 point) => Math.Abs(A * point.X + B * point.Y + C) >= double.Epsilon;
+
+        public override List<LineSeg> GetLineSegs() => new List<LineSeg> {new LineSeg(P1, P2, Normal, Material)};
 
         private static void GetABC(Vector2 p1, Vector2 p2, out double a, out double b, out double c)
         {

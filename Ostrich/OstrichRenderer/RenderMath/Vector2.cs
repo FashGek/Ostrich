@@ -30,6 +30,9 @@ namespace OstrichRenderer.RenderMath
             return new Vector2(v.X / magnitude, v.Y / magnitude);
         }
 
+        public static double Angle(Vector2 from, Vector2 to) =>
+            /*Math.Tan(*/Math.Acos(Mathd.Range(Dot(from.Normalize(), to.Normalize()), -1d, 1d))/* * 57.29578)*/;
+
         public static Vector2 operator +(Vector2 lhs, Vector2 rhs) => new Vector2(lhs.X + rhs.X, lhs.Y + rhs.Y);
 
         public static Vector2 operator *(Vector2 lhs, double v) => new Vector2(lhs.X * v, lhs.Y * v);

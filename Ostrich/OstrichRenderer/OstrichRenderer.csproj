@@ -61,6 +61,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -87,6 +89,8 @@
     <Compile Include="Primitives\Substract.cs" />
     <Compile Include="Primitives\Triangle.cs" />
     <Compile Include="Primitives\Union.cs" />
+    <Compile Include="Rendering\LineSeg.cs" />
+    <Compile Include="Rendering\Point.cs" />
     <Compile Include="RenderMath\Color32.cs" />
     <Compile Include="RenderMath\Mathd.cs" />
     <Compile Include="RenderMath\Random.cs" />
