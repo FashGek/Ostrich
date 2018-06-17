@@ -32,8 +32,7 @@ namespace OstrichRenderer.Rendering
         public static List<LineSeg> Cut(LineSeg l1, LineSeg l2, Vector2 i)
         {
             List<LineSeg> line = new List<LineSeg>();
-            LineSeg i1, i2;
-            l1.Cut(i, out i1, out i2);
+            l1.Cut(i, out LineSeg i1, out LineSeg i2);
             line.Add(i1);
             line.Add(i2);
             l2.Cut(i, out i1, out i2);
@@ -94,8 +93,7 @@ namespace OstrichRenderer.Rendering
             if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
             {
                 i = new Vector2(l1.P1.X + t * s1.X, l1.P1.Y + t * s1.Y);
-                if (i == l2.P1 || i == l2.P2) return false;
-                return true;
+                return i != l2.P1 && i != l2.P2;
             }
             i = new Vector2();
             return false;

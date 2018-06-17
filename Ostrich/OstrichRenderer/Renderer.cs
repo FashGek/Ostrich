@@ -192,11 +192,11 @@ namespace OstrichRenderer
             PrepareScene();
             Console.WriteLine("场景加载耗时: " + stopwatch.ElapsedMilliseconds + "ms");
 
-            foreach (LineSeg lineSeg in LineSegs)
-            {
-                DrawLine(lineSeg.P1, lineSeg.P2, new Color32(1, 0, 0));
-            }
-            return;
+            //foreach (LineSeg lineSeg in LineSegs)
+            //{
+            //    DrawLine(lineSeg.P1, lineSeg.P2, new Color32(1, 0, 0));
+            //}
+            //return;
 
             //#if  DEBUG
             //            Seeds = new long[Width, Height];
@@ -208,11 +208,11 @@ namespace OstrichRenderer
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            for (int y = 0; y < Height; y++)
-            {
+            //for (int y = 0; y < Height; y++)
+            //{
                 //多线程加速
-                //Parallel.For(0, Height, y =>
-                //{
+                Parallel.For(0, Height, y =>
+                {
                     for (int x = 0; x < Width; x++)
                     {
                         if (x == 219 && y == 210)
@@ -224,8 +224,8 @@ namespace OstrichRenderer
 //#endif
                         Sampling(x, y);
                     }
-                //});
-        }
+                });
+            //}
         stopwatch.Stop();
             Console.WriteLine("渲染耗时: " + stopwatch.ElapsedMilliseconds / 1000f + "s");
         }
@@ -342,26 +342,26 @@ namespace OstrichRenderer
 
             #endregion
 
-            foreach (List<Point> point in points)
-            {
-                if (point.Count % 2 == 1 && point.Count != 1)
-                {
-                    Console.WriteLine(new Vector2(x, y));
-                    foreach (Point point1 in point)
-                    {
-                        DrawLine(LineSegs[point1.Line].P1, LineSegs[point1.Line].P2, new Color32(0, 0, 1));
-                    }
-                    foreach (Point point1 in point)
-                    {
-                        DrawLine(Origin, point1.Position, new Color32(0, 0, 1));
-                    }
-                    continue;
-                }
-                foreach (Point point1 in point)
-                {
-                    DrawLine(Origin, point1.Position, new Color32(0, 1, 0));
-                }
-            }
+            //foreach (List<Point> point in points)
+            //{
+            //    if (point.Count % 2 == 1 && point.Count != 1)
+            //    {
+            //        Console.WriteLine(new Vector2(x, y));
+            //        //foreach (Point point1 in point)
+            //        //{
+            //        //    DrawLine(LineSegs[point1.Line].P1, LineSegs[point1.Line].P2, new Color32(0, 0, 1));
+            //        //}
+            //        //foreach (Point point1 in point)
+            //        //{
+            //        //    DrawLine(Origin, point1.Position, new Color32(0, 0, 1));
+            //        //}
+            //        continue;
+            //    }
+            //    foreach (Point point1 in point)
+            //    {
+            //        DrawLine(Origin, point1.Position, new Color32(0, 1, 0));
+            //    }
+            //}
 
             #region useless
 
@@ -427,11 +427,14 @@ namespace OstrichRenderer
                 if (line == i) continue;
                 if (LineSeg.IsIntersect(lineSeg, LineSegs[i], out Vector2 vector2))
                 {
+                    if (vector2 == LineSegs[i].P1 || vector2 == LineSegs[i].P2)
+                        continue;
                     double l = (ray.Origin - vector2).Magnitude();
                     if (vector2 == p1.Position) continue;
+                    //b1 = l >= p1l && b1;
                     if (l < p1l && b1)
                     {
-                        p1 = new Point();
+                        //p1 = new Point();
                         b1 = false;
                     }
                     if (l < p2l)
@@ -505,7 +508,7 @@ namespace OstrichRenderer
         {
             if (LineSegs != null)
             {
-                DrawRoute(1010, 5);
+                DrawRoute(805, 15);
                 //DrawLine(LineSegs[tag].P1, LineSegs[tag].P2, new Color32(1, 0, 0));
                 //tag++;
                 //if (tag == LineSegs.Length) tag--;

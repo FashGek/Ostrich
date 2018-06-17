@@ -12,10 +12,7 @@ namespace OstrichRenderer.RenderMath
             Y = y;
         }
 
-        public override string ToString()
-        {
-            return "<" + X + "," + Y + ">";
-        }
+        public override string ToString() => "<" + X + "," + Y + ">";
 
         public double Magnitude() => Math.Sqrt(X * X + Y * Y);
 
@@ -45,14 +42,11 @@ namespace OstrichRenderer.RenderMath
 
         public static Vector2 operator -(Vector2 lhs, Vector2 rhs) => new Vector2(lhs.X - rhs.X, lhs.Y - rhs.Y);
 
-        public bool Equals(Vector2 other)
-        {
-            return X.Equals(other.X) && Y.Equals(other.Y);
-        }
+        public bool Equals(Vector2 other) => X.Equals(other.X) && Y.Equals(other.Y);
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             return obj.GetType() == GetType() && Equals((Vector2)obj);
         }
 

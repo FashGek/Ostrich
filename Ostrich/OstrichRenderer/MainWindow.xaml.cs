@@ -30,10 +30,7 @@ namespace OstrichRenderer
             Render.IsEnabled = false;
         }
 
-        private void Preview_Closed(object sender, EventArgs e)
-        {
-            Render.IsEnabled = true;
-        }
+        private void Preview_Closed(object sender, EventArgs e) => Render.IsEnabled = true;
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {

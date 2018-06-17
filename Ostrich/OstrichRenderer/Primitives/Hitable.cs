@@ -9,7 +9,6 @@ namespace OstrichRenderer.Primitives
     public abstract class Hitable
     {
         public string Name;
-        public bool IsFilp;
         public abstract bool IsInside(Vector2 point);
         public abstract bool IsInside(Vector2 point, out Point p);
         public abstract bool IsOnBoundary(Vector2 point);

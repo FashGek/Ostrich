@@ -34,11 +34,8 @@ namespace OstrichRenderer.Primitives
             return true;
         }
 
-        public override bool IsOnBoundary(Vector2 point)
-        {
-            return Minuend.IsOnBoundary(point) && !Substraction.Any(hitable => hitable.IsInside(point)) ||
-                   Minuend.IsInside(point) && !Substraction.Any(hitable => hitable.IsOnBoundary(point));
-        }
+        public override bool IsOnBoundary(Vector2 point) => Minuend.IsOnBoundary(point) && !Substraction.Any(hitable => hitable.IsInside(point)) ||
+                                                            Minuend.IsInside(point) && !Substraction.Any(hitable => hitable.IsOnBoundary(point));
 
         public override List<LineSeg> GetLineSegs()
         {

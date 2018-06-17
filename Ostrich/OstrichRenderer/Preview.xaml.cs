@@ -30,20 +30,14 @@ namespace OstrichRenderer
             WriteableBitmap = new WriteableBitmap((BitmapSource) Img.Source);
         }
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e) => Img.Dispatcher.BeginInvoke(new Action(() =>
         {
-            Img.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                Bitmap2WriteableBitmap.BitmapToWriteableBitmap(WriteableBitmap,
-                    Renderer.GetBitmap());
-                Img.Source = WriteableBitmap;
-            }));
-        }
+            Bitmap2WriteableBitmap.BitmapToWriteableBitmap(WriteableBitmap,
+                Renderer.GetBitmap());
+            Img.Source = WriteableBitmap;
+        }));
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Renderer.Start();
-        }
+        private void Window_Loaded(object sender, RoutedEventArgs e) => Renderer.Start();
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
