@@ -26,9 +26,9 @@ namespace OstrichRenderer.Primitives
             lineSeg.AddRange(O1.GetLineSegs());
             lineSeg.AddRange(O2.GetLineSegs());
             lineSeg = LineSeg.DivideByIntersection(lineSeg);
-            for (int i = 0; i < lineSeg.Count; i++)
-                if (O1.IsInside(lineSeg[i].Position) && O1.IsOnBoundary(lineSeg[i].Position) ||
-                    O2.IsInside(lineSeg[i].Position) && O2.IsOnBoundary(lineSeg[i].Position)) lineSeg.RemoveAt(i);
+            //for (int i = 0; i < lineSeg.Count; i++)
+            //    if (O1.IsInside(lineSeg[i].Position) && O1.IsOnBoundary(lineSeg[i].Position) ||
+            //        O2.IsInside(lineSeg[i].Position) && O2.IsOnBoundary(lineSeg[i].Position)) lineSeg.RemoveAt(i);
             return lineSeg;
         }
     }

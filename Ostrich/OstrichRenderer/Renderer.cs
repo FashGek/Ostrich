@@ -18,14 +18,14 @@ namespace OstrichRenderer
         private static Material[] Materials;
         private static LineSeg[] LineSegs;
 
-        private static double[] Buff;
+        private static float[] Buff;
         private static PointBitmap PointBitmap;
 
         public static void Init(int width, int height)
         {
             Width = width;
             Height = height;
-            Buff = new double[width * height * 4];
+            Buff = new float[width * height * 4];
             PointBitmap = new PointBitmap(new Bitmap(width, height));
         }
 
@@ -55,10 +55,10 @@ namespace OstrichRenderer
 
             World.Add(new Circle(new Vector2(416, 98), 55, 1));
 
-            World.Add(
-                new Quadrilateral(new Vector2(516, 129), new Vector2(448, 172), new Vector2(647, 569),
-                    new Vector2(721, 534), 2) + new Quadrilateral(new Vector2(746, 153), new Vector2(635, 100),
-                    new Vector2(412, 536), new Vector2(455, 581), 2));
+            //World.Add(
+            //    new Quadrilateral(new Vector2(516, 129), new Vector2(448, 172), new Vector2(647, 569),
+            //        new Vector2(721, 534), 2) + new Quadrilateral(new Vector2(746, 153), new Vector2(635, 100),
+            //        new Vector2(412, 536), new Vector2(455, 581), 2));
 
             World.Add(new Circle(new Vector2(738, 628), 55, 3));
 
@@ -82,11 +82,11 @@ namespace OstrichRenderer
 
             Materials = new Material[]
             {
-                new Light(new Color32(1, 0.5, 0.5), 1, 0.3),
-                new Light(new Color32(0.75, 0.75, 0.5), 1, 0.3),
-                new Light(new Color32(0.5, 1, 0.5), 1, 0.3),
-                new Light(new Color32(0.5, 0.75, 0.75), 1, 0.3),
-                new Light(new Color32(0.5, 0.5, 1), 1, 0.3)
+                new Light(new Color32(1, 0.5f, 0.5f), 1, 0.3f),
+                new Light(new Color32(0.75f, 0.75f, 0.5f), 1, 0.3f),
+                new Light(new Color32(0.5f, 1, 0.5f), 1, 0.3f),
+                new Light(new Color32(0.5f, 0.75f, 0.75f), 1, 0.3f),
+                new Light(new Color32(0.5f, 0.5f, 1), 1, 0.3f)
             };
         }
 
@@ -197,10 +197,6 @@ namespace OstrichRenderer
             //    DrawLine(lineSeg.P1, lineSeg.P2, new Color32(1, 0, 0));
             //}
             //return;
-
-            //#if  DEBUG
-            //            Seeds = new long[Width, Height];
-            //#endif
             new Task(Render).Start();
         }
 
@@ -214,23 +210,14 @@ namespace OstrichRenderer
                 Parallel.For(0, Height, y =>
                 {
                     for (int x = 0; x < Width; x++)
-                    {
-                        if (x == 219 && y == 210)
-                        {
-
-                        }
-//#if DEBUG
-//                        Seeds[x, y] = Random.Seed;
-//#endif
                         Sampling(x, y);
-                    }
                 });
             //}
-        stopwatch.Stop();
+            stopwatch.Stop();
             Console.WriteLine("渲染耗时: " + stopwatch.ElapsedMilliseconds / 1000f + "s");
         }
 
-        private static void Sampling(int x, int y)
+        private static void Sampling(int x, int y, bool debug = false)
         {
             Vector2 Origin = new Vector2(x, y);
             Color32 color = new Color32();
@@ -248,9 +235,9 @@ namespace OstrichRenderer
                 points[i] = new List<Point>();
             foreach (LineSeg lineSeg in LineSegs)
             {
-                double l = lineSeg.Normal * (Origin - lineSeg.Position);
-                bool isOnline = l == 0;
+                float l = lineSeg.Normal * (Origin - lineSeg.Position);
                 if (l < 0) continue;
+                bool isOnline = l == 0;
                 HitLineSeg(new Ray(Origin, lineSeg.P1 - Origin), lineSeg.ID, out Point p1,
                     out Point p2, out bool b1, out bool b2);
                 if (!isOnline)
@@ -266,14 +253,12 @@ namespace OstrichRenderer
 
             foreach (List<Point> point in points)
             {
-                //if (point.Count % 2 == 1)
-                //{ continue;}
                 if (point.Count < 2) continue;
                 if (point.Count == 2)
                 {
                     if (point[0].Position == point[1].Position) continue;
                     color += Math.Abs(Vector2.Angle(point[0].Position - Origin, point[1].Position - Origin)) /
-                             Mathd.TwoPi * Materials[point[0].Materail].GetColor();
+                             Mathf.TwoPi * Materials[point[0].Materail].GetColor();
                     continue;
                 }
                 Point lastPoint = point[0];
@@ -294,7 +279,7 @@ namespace OstrichRenderer
                 point.Sort();
                 for (int i = 0; i < point.Count; i += 2)
                     color += Math.Abs(Vector2.Angle(point[i].Position - Origin, point[i + 1].Position - Origin)) /
-                             Mathd.TwoPi * Materials[point[i].Materail].GetColor();
+                             Mathf.TwoPi * Materials[point[i].Materail].GetColor();
             }
 
             Buff[y * Width * 4 + x * 4] = color.B;
@@ -302,122 +287,45 @@ namespace OstrichRenderer
             Buff[y * Width * 4 + x * 4 + 2] = color.R;
             Buff[y * Width * 4 + x * 4 + 3] = 1;
 
-            #region ffff
+            #region debug
 
-            //foreach (List<Point> point in points)
+            //if (debug)
             //{
-            //    if (point.Count % 2 == 1) continue;
-            //    if (point.Count < 2) continue;
-            //    if (point.Count == 2)
+            //    foreach (List<Point> point in points)
             //    {
-            //        if (point[0].Position == point[1].Position) continue;
-            //        DrawLine(point[0].Position, point[01].Position, new Color32(0, 0, 1));
-            //        //color += Math.Abs(Vector2.Angle(point[0].Position - Origin, point[1].Position - Origin)) /
-            //        //         Mathd.TwoPi * Materials[point[0].Materail].GetColor();
-            //        continue;
-            //    }
-            //    for (int i = 0; i < point.Count; i++)
-            //    {
-            //        Point poo = point[i];
-            //        poo.Distance = (LineSegs[poo.Line].P1 - poo.Position).Magnitude();
-            //        point[i] = poo;
-            //    }
-            //    //foreach (Point point1 in point)
-            //    //    point1.SetDis((LineSegs[point1.Line].P1 - point1.Position).Magnitude());
-            //    point.Sort();
-            //    for (int i = 0; i < point.Count; i += 2)
-            //        DrawLine(point[i].Position, point[i + 1].Position, new Color32(0, 0, 1));
-            //    //color += Math.Abs(Vector2.Angle(point[i].Position - Origin, point[i + 1].Position - Origin)) /
-            //    //         Mathd.TwoPi * Materials[point[i].Materail].GetColor();
-            //}
-            //if (lineSeg.Normal * (new Vector2(x, y) - lineSeg.Position) < 0)
-            //{
-            //    DrawLine(lineSeg.P1, lineSeg.P2, new Color32(0, 0, 1));
-            //}
-            //else
-            //{
-            //    DrawLine(lineSeg.P1, lineSeg.P2, new Color32(0, 1, 0));
-            //}
-            //}
-
-            #endregion
-
-            //foreach (List<Point> point in points)
-            //{
-            //    if (point.Count % 2 == 1 && point.Count != 1)
-            //    {
-            //        Console.WriteLine(new Vector2(x, y));
-            //        //foreach (Point point1 in point)
-            //        //{
-            //        //    DrawLine(LineSegs[point1.Line].P1, LineSegs[point1.Line].P2, new Color32(0, 0, 1));
-            //        //}
-            //        //foreach (Point point1 in point)
-            //        //{
-            //        //    DrawLine(Origin, point1.Position, new Color32(0, 0, 1));
-            //        //}
-            //        continue;
-            //    }
-            //    foreach (Point point1 in point)
-            //    {
-            //        DrawLine(Origin, point1.Position, new Color32(0, 1, 0));
+            //        if (point.Count % 2 == 1 && point.Count != 1)
+            //        {
+            //            Console.WriteLine(new Vector2(x, y));
+            //            //foreach (Point point1 in point)
+            //            //{
+            //            //    DrawLine(LineSegs[point1.Line].P1, LineSegs[point1.Line].P2, new Color32(0, 0, 1));
+            //            //}
+            //            //foreach (Point point1 in point)
+            //            //{
+            //            //    DrawLine(Origin, point1.Position, new Color32(0, 0, 1));
+            //            //}
+            //            continue;
+            //        }
+            //        foreach (Point point1 in point)
+            //        {
+            //            DrawLine(Origin, point1.Position, new Color32(0, 1, 0));
+            //        }
             //    }
             //}
-
-            #region useless
-
-            //Color32 sum = Color32.Black;
-            //for (int i = 0; i < Sample; i++)
-            //{
-            //    if (x == 255 && y == 0)
-            //    {
-
-            //    }
-            //    double a = Mathd.TwoPi * (i + Random.Get()) / Sample;//抖动采样
-            //    sum += Trace(new Ray(new Vector2(x, y),
-            //        new Vector2(Math.Cos(a), Math.Sin(a))), 0);
-            //}
-            //sum = sum / Sample;
-            //Buff[y * Width * 4 + x * 4] = sum.B;
-            //Buff[y * Width * 4 + x * 4 + 1] = sum.G;
-            //Buff[y * Width * 4 + x * 4 + 2] = sum.R;
-            //Buff[y * Width * 4 + x * 4 + 3] = sum.A;
 
             #endregion
         }
 
-        //        private static Color32 Trace(Ray ray, int depth, bool debug = false)
-        //        {
-        //            HitRecord hit = new HitRecord();
-        //            RayCount++;
-        //            if (!World.Hit(ray, 0, double.MaxValue, ref hit)) return Color32.Black;
-        //#if DEBUG
-        //            if (debug) DrawLine(ray.Origin, hit.P, new Color32(1, 0, 0));
-        //#endif
-        //            Color32 attenuation = Color32.Black;
-        //            Ray r = new Ray(Vector2.Zero, Vector2.Zero);
-
-        //            if (depth < MaxDepth && Materials[hit.Material].Scatter(ray, hit, ref attenuation, ref r))
-        //                //return attenuation + hit.Material.Reflectivity * Trace(r, depth + 1, debug);
-        //                return attenuation;
-        //            return attenuation;
-        //#if DEBUG
-        //            if (debug)
-        //                DrawLine(ray.Origin, ray.Origin + ray.NormalDirection * Width, new Color32(1, 0, 0));
-        //#endif
-        //        }
-
-        /// <summary>
         /// 如果端点在前，返回true，否则是false
-        /// </summary>
         /// <param name="ray"></param>
         /// <param name="p1">端点</param>
         /// <param name="p2">交点</param>
         private static void HitLineSeg(Ray ray, uint line, out Point p1, out Point p2, out bool b1, out bool b2)
         {
-            LineSeg lineSeg = new LineSeg(ray.Origin, ray.NormalDirection * (double.MaxValue / 10000) + ray.Origin,
+            LineSeg lineSeg = new LineSeg(ray.Origin, ray.NormalDirection * (float.MaxValue / 10000) + ray.Origin,
                 LineSegs[line].Normal, 0);
-            double p1l = ray.Direction.Magnitude();
-            double p2l = double.MaxValue;
+            float p1l = ray.Direction.Magnitude();
+            float p2l = float.MaxValue;
             p1 = new Point(LineSegs[line].Material, line, ray.Direction + ray.Origin);
             p2 = new Point();
             b1 = true;
@@ -425,29 +333,21 @@ namespace OstrichRenderer
             for (uint i = 0; i < LineSegs.Length; i++)
             {
                 if (line == i) continue;
-                if (LineSeg.IsIntersect(lineSeg, LineSegs[i], out Vector2 vector2))
+                if (!LineSeg.IsIntersect(lineSeg, LineSegs[i], out Vector2 vector2)) continue;
+                if (vector2 == p1.Position) continue;
+                if (vector2 == LineSegs[i].P1 || vector2 == LineSegs[i].P2) continue;
+                float l = (ray.Origin - vector2).Magnitude();
+                if (l < p1l && b1) b1 = false;
+                if (l < p2l)
                 {
-                    if (vector2 == LineSegs[i].P1 || vector2 == LineSegs[i].P2)
+                    p2l = l;
+                    if (l < p1l || LineSegs[i].Normal * (ray.Origin - LineSegs[i].Position) < 0)
+                    {
+                        b2 = false;
                         continue;
-                    double l = (ray.Origin - vector2).Magnitude();
-                    if (vector2 == p1.Position) continue;
-                    //b1 = l >= p1l && b1;
-                    if (l < p1l && b1)
-                    {
-                        //p1 = new Point();
-                        b1 = false;
                     }
-                    if (l < p2l)
-                    {
-                        p2l = l;
-                        if (l < p1l || LineSegs[i].Normal * (ray.Origin - LineSegs[i].Position) < 0)
-                        {
-                            b2 = false;
-                            continue;
-                        }
-                        p2 = new Point(LineSegs[i].Material, i, vector2);
-                        b2 = true;
-                    }
+                    p2 = new Point(LineSegs[i].Material, i, vector2);
+                    b2 = true;
                 }
             }
             if (b2 && (p2.Position == LineSegs[p2.Line].P1 || p2.Position == LineSegs[p2.Line].P2)) b2 = false;
@@ -468,15 +368,15 @@ namespace OstrichRenderer
 
         public static void DrawRoute(int x, int y)
         {
-#if DEBUG
-            Sampling(x, y);
+//#if DEBUG
+            Sampling(x, y, true);
             //Random.Seed = Seeds[x, y];
             //for (int i = 0; i < Sample; i++)
             //{
-            //    double a = Mathd.TwoPi * (i + Random.Get()) / Sample;
+            //    float a = Mathf.TwoPi * (i + Random.Get()) / Sample;
             //    Trace(new Ray(new Vector2(x, y), new Vector2(Math.Cos(a), Math.Sin(a))), 0, true);
             //}
-#endif
+//#endif
         }
 
         private static void DrawLine(Vector2 s, Vector2 e, Color32 color)
@@ -508,14 +408,11 @@ namespace OstrichRenderer
         {
             if (LineSegs != null)
             {
-                DrawRoute(805, 15);
-                //DrawLine(LineSegs[tag].P1, LineSegs[tag].P2, new Color32(1, 0, 0));
-                //tag++;
-                //if (tag == LineSegs.Length) tag--;
+                //DrawRoute(335, 359);
             }
             PointBitmap.LockBits();
             for (int i = 0; i < Buff.Length; i++)
-                PointBitmap.SetColor(i, (byte) Mathd.Range(Buff[i] * 255 + 0.5, 0, 255));
+                PointBitmap.SetColor(i, (byte) Mathf.Range(Buff[i] * 255 + 0.5f, 0, 255));
 
             return PointBitmap.UnlockBits();
         }

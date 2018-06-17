@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using OstrichRenderer.RenderMath;
+﻿using OstrichRenderer.RenderMath;
+using System.Collections.Generic;
 
 namespace OstrichRenderer.Rendering
 {
@@ -20,8 +19,8 @@ namespace OstrichRenderer.Rendering
             ID = 0;
         }
 
-        public bool IsInside(Vector2 point) => point.X >= Mathd.Min(P1.X, P2.X) && point.X <= Mathd.Max(P1.X, P2.X) &&
-                                               point.Y >= Mathd.Min(P1.Y, P2.Y) && point.Y <= Mathd.Max(P1.Y, P2.Y);
+        public bool IsInside(Vector2 point) => point.X >= Mathf.Min(P1.X, P2.X) && point.X <= Mathf.Max(P1.X, P2.X) &&
+                                               point.Y >= Mathf.Min(P1.Y, P2.Y) && point.Y <= Mathf.Max(P1.Y, P2.Y);
 
         public void Cut(Vector2 point, out LineSeg l1, out LineSeg l2)
         {
@@ -78,17 +77,17 @@ namespace OstrichRenderer.Rendering
 
         public static bool IsIntersect(LineSeg l1, LineSeg l2, out Vector2 i)
         {
-            if (l1.IsConnectedWith(l2))
-            {
-                i = new Vector2();
-                return false;
-            }
+            //if (l1.IsConnectedWith(l2))
+            //{
+            //    i = new Vector2();
+            //    return false;
+            //}
 
             Vector2 s1 = l1.P2 - l1.P1;
             Vector2 s2 = l2.P2 - l2.P1;
 
-            double s = (-s1.Y * (l1.P1.X - l2.P1.X) + s1.X * (l1.P1.Y - l2.P1.Y)) / (-s2.X * s1.Y + s1.X * s2.Y);
-            double t = (s2.X * (l1.P1.Y - l2.P1.Y) - s2.Y * (l1.P1.X - l2.P1.X)) / (-s2.X * s1.Y + s1.X * s2.Y);
+            float s = (-s1.Y * (l1.P1.X - l2.P1.X) + s1.X * (l1.P1.Y - l2.P1.Y)) / (-s2.X * s1.Y + s1.X * s2.Y);
+            float t = (s2.X * (l1.P1.Y - l2.P1.Y) - s2.Y * (l1.P1.X - l2.P1.X)) / (-s2.X * s1.Y + s1.X * s2.Y);
 
             if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
             {
@@ -99,8 +98,8 @@ namespace OstrichRenderer.Rendering
             return false;
         }
 
-        public bool IsConnectedWith(LineSeg line) => P1 == line.P1 || P1 == line.P2 || P2 == line.P1 || line.P2 == P2;
+        //public bool IsConnectedWith(LineSeg line) => P1 == line.P1 || P1 == line.P2 || P2 == line.P1 || line.P2 == P2;
 
-        public double Length() => (P1 - P2).Magnitude();
+        public float Length() => (P1 - P2).Magnitude();
     }
 }

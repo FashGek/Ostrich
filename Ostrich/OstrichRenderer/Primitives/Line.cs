@@ -8,7 +8,7 @@ namespace OstrichRenderer.Primitives
 {
     public class Line : Hitable
     {
-        private readonly double A, B, C;
+        private readonly float A, B, C;
         private readonly Vector2 Normal, P1, P2;
         private readonly ushort Material;
 
@@ -33,11 +33,11 @@ namespace OstrichRenderer.Primitives
             return false;
         }
 
-        public override bool IsOnBoundary(Vector2 point) => Math.Abs(A * point.X + B * point.Y + C) >= double.Epsilon;
+        public override bool IsOnBoundary(Vector2 point) => Math.Abs(A * point.X + B * point.Y + C) >= float.Epsilon;
 
         public override List<LineSeg> GetLineSegs() => new List<LineSeg> {new LineSeg(P1, P2, Normal, Material)};
 
-        private static void GetABC(Vector2 p1, Vector2 p2, out double a, out double b, out double c)
+        private static void GetABC(Vector2 p1, Vector2 p2, out float a, out float b, out float c)
         {
             a = -(p1.Y - p2.Y);
             b = p1.X - p2.X;
@@ -46,10 +46,10 @@ namespace OstrichRenderer.Primitives
 
         private Vector2 CalcIntersect(Ray ray)
         {
-            double interx =
+            float interx =
                 (B * ray.Direction.Y * ray.Origin.X - B * ray.Direction.X * ray.Origin.Y - C * ray.Direction.X) /
                 (A * ray.Direction.X + B * ray.Direction.Y);
-            double intery;
+            float intery;
             if (ray.Direction.X > 0)
                 intery = (interx - ray.Origin.X) * ray.Direction.Y / ray.Direction.X + ray.Origin.Y;
             else intery = (-C - A * interx) / B;

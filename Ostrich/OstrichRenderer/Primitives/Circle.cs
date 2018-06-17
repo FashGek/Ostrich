@@ -9,10 +9,10 @@ namespace OstrichRenderer.Primitives
     public class Circle : Hitable
     {
         public Vector2 Center;
-        public double R, R2;
+        public float R, R2;
         public ushort Material;
 
-        public Circle(Vector2 cen, double r, ushort material)
+        public Circle(Vector2 cen, float r, ushort material)
         {
             Center = cen;
             Material = material;
@@ -29,7 +29,7 @@ namespace OstrichRenderer.Primitives
             return true;
         }
 
-        public override bool IsOnBoundary(Vector2 point) => (Center - point).Magnitude() <= double.Epsilon;
+        public override bool IsOnBoundary(Vector2 point) => (Center - point).Magnitude() <= float.Epsilon;
 
         public override List<LineSeg> GetLineSegs() => new List<LineSeg>();
         

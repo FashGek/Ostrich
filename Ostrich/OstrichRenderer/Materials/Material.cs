@@ -12,7 +12,7 @@ namespace OstrichRenderer.Materials
 {
     public abstract class Material
     {
-        public double Reflectivity;
+        public float Reflectivity;
 
         public abstract Color32 GetColor();
     }
@@ -20,11 +20,11 @@ namespace OstrichRenderer.Materials
     public class Light : Material
     {
         /// 强度
-        public double Intensity;
+        public float Intensity;
 
         public Color32 Color;
 
-        public Light(Color32 color, double intensity, double reflectivity)
+        public Light(Color32 color, float intensity, float reflectivity)
         {
             Color = color;
             Intensity = intensity;

@@ -92,7 +92,7 @@
     <Compile Include="Rendering\LineSeg.cs" />
     <Compile Include="Rendering\Point.cs" />
     <Compile Include="RenderMath\Color32.cs" />
-    <Compile Include="RenderMath\Mathd.cs" />
+    <Compile Include="RenderMath\Mathf.cs" />
     <Compile Include="RenderMath\Random.cs" />
     <Compile Include="RenderMath\Vector2.cs" />
     <Compile Include="PointBitmap.cs" />
