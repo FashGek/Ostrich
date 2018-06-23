@@ -4,10 +4,10 @@
     {
         public static long Seed = 1;
 
-        public static float Get()
+        public static double Get()
         {
             Seed = (0x5DEECE66DL * Seed + 0xB16) & 0xFFFFFFFFFFFFL;
-            return (Seed >> 16) / (float)0x100000000L;
+            return (Seed >> 16) / (double)0x100000000L;
         }
     }
 }

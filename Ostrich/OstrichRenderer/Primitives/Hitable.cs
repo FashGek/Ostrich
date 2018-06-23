@@ -1,4 +1,5 @@
-﻿using OstrichRenderer.Materials;
+﻿using System;
+using OstrichRenderer.Materials;
 using OstrichRenderer.Rendering;
 using OstrichRenderer.RenderMath;
 using System.Collections.Generic;
@@ -18,12 +19,12 @@ namespace OstrichRenderer.Primitives
 
         public static Union operator +(Hitable lhs, Hitable rhs) => new Union(lhs, rhs);
 
-        public static Substract operator -(Hitable lhs, Hitable rhs) => new Substract(lhs, rhs);
-        public static Substract operator -(Substract lhs, Hitable rhs)
-        {
-            lhs.AddSubstraction(rhs);
-            return lhs;
-        }
+        //public static Substract operator -(Hitable lhs, Hitable rhs) => new Substract(lhs, rhs);
+        //public static Substract operator -(Substract lhs, Hitable rhs)
+        //{
+        //    lhs.AddSubstraction(rhs);
+        //    return lhs;
+        //}
     }
 
     public class HitableList : Hitable

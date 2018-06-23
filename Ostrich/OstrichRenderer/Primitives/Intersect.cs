@@ -38,7 +38,7 @@ namespace OstrichRenderer.Primitives
 
         /*
          
-        public override bool Hit(Ray ray, float tMin, float tMax, ref HitRecord rec)
+        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             HitRecord record1 = new HitRecord(), record2 = new HitRecord();
             if(!(O1.Hit(ray,tMin,tMax, ref record1)&& O2.Hit(ray, tMin, tMax, ref record2))) return false;
@@ -57,7 +57,7 @@ namespace OstrichRenderer.Primitives
 
         /*
          
-                 public override bool Hit(Ray ray, float tMin, float tMax, ref HitRecord rec)
+                 public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             bool isInside = IsInside(ray.Origin);
             HitRecord[] records = new HitRecord[Hitables.Length];
@@ -84,7 +84,7 @@ namespace OstrichRenderer.Primitives
             }
             if (validRecords.Count == 0) return false;
 
-            float mint = validRecords[0].T;
+            double mint = validRecords[0].T;
             rec = validRecords[0];
             foreach (HitRecord validRecord in validRecords)
                 if (validRecord.T <= mint)

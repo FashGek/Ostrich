@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
 using Point = OstrichRenderer.Rendering.Point;
 
@@ -18,14 +19,14 @@ namespace OstrichRenderer
         private static Material[] Materials;
         private static LineSeg[] LineSegs;
 
-        private static float[] Buff;
+        private static double[] Buff;
         private static PointBitmap PointBitmap;
 
         public static void Init(int width, int height)
         {
             Width = width;
             Height = height;
-            Buff = new float[width * height * 4];
+            Buff = new double[width * height * 4];
             PointBitmap = new PointBitmap(new Bitmap(width, height));
         }
 
@@ -53,40 +54,40 @@ namespace OstrichRenderer
             World.Add(new Quadrilateral(new Vector2(323, 291), new Vector2(155, 300), new Vector2(149, 379),
                 new Vector2(320, 375), 0));
 
-            World.Add(new Circle(new Vector2(416, 98), 55, 1));
+            //World.Add(new Circle(new Vector2(416, 98), 55, 1));
 
             //World.Add(
             //    new Quadrilateral(new Vector2(516, 129), new Vector2(448, 172), new Vector2(647, 569),
             //        new Vector2(721, 534), 2) + new Quadrilateral(new Vector2(746, 153), new Vector2(635, 100),
             //        new Vector2(412, 536), new Vector2(455, 581), 2));
 
-            World.Add(new Circle(new Vector2(738, 628), 55, 3));
+            //World.Add(new Circle(new Vector2(738, 628), 55, 3));
 
             World.Add(new Quadrilateral(new Vector2(927, 128), new Vector2(862, 118), new Vector2(758, 540),
                 new Vector2(826, 569), 4));
 
-            World.Add(new Circle(new Vector2(931, 73), 49, 4));
+            //World.Add(new Circle(new Vector2(931, 73), 49, 4));
 
             World.Add(new Quadrilateral(new Vector2(993, 112), new Vector2(943, 129), new Vector2(1045, 585),
                 new Vector2(1120, 572), 4));
 
-            World.Add(new Circle(new Vector2(1122, 635), 47, 4));
+            //World.Add(new Circle(new Vector2(1122, 635), 47, 4));
 
             World.Add(new Quadrilateral(new Vector2(1278, 123), new Vector2(1208, 120), new Vector2(1130, 571),
                 new Vector2(1187, 592), 4));
 
-            World.Add(new Circle(new Vector2(1284, 73), 44, 4));
+            //World.Add(new Circle(new Vector2(1284, 73), 44, 4));
 
             World.Add(new Quadrilateral(new Vector2(1358, 115), new Vector2(1286, 121), new Vector2(1389, 619),
                 new Vector2(1465, 604), 4));
 
-            Materials = new Material[]
+            Materials = new[]
             {
-                new Light(new Color32(1, 0.5f, 0.5f), 1, 0.3f),
-                new Light(new Color32(0.75f, 0.75f, 0.5f), 1, 0.3f),
-                new Light(new Color32(0.5f, 1, 0.5f), 1, 0.3f),
-                new Light(new Color32(0.5f, 0.75f, 0.75f), 1, 0.3f),
-                new Light(new Color32(0.5f, 0.5f, 1), 1, 0.3f)
+                new Material(new Color32(1, 0.5, 0.5), 1),
+                new Material(new Color32(0.75, 0.75, 0.5), 1), 
+                new Material(new Color32(0.5, 1, 0.5), 1),
+                new Material(new Color32(0.5, 0.75, 0.75), 1),
+                new Material(new Color32(0.5, 0.5, 1), 1)
             };
         }
 
@@ -204,6 +205,7 @@ namespace OstrichRenderer
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+            
             //for (int y = 0; y < Height; y++)
             //{
                 //多线程加速
@@ -235,7 +237,7 @@ namespace OstrichRenderer
                 points[i] = new List<Point>();
             foreach (LineSeg lineSeg in LineSegs)
             {
-                float l = lineSeg.Normal * (Origin - lineSeg.Position);
+                double l = lineSeg.Normal * (Origin - lineSeg.Position);
                 if (l < 0) continue;
                 bool isOnline = l == 0;
                 HitLineSeg(new Ray(Origin, lineSeg.P1 - Origin), lineSeg.ID, out Point p1,
@@ -274,8 +276,7 @@ namespace OstrichRenderer
                     p1.Distance = (LineSegs[p1.Line].P1 - p1.Position).Magnitude();
                     point[i] = p1;
                 }
-                if (point.Count % 2 == 1)
-                { continue; }
+                if (point.Count % 2 == 1) continue;
                 point.Sort();
                 for (int i = 0; i < point.Count; i += 2)
                     color += Math.Abs(Vector2.Angle(point[i].Position - Origin, point[i + 1].Position - Origin)) /
@@ -322,10 +323,10 @@ namespace OstrichRenderer
         /// <param name="p2">交点</param>
         private static void HitLineSeg(Ray ray, uint line, out Point p1, out Point p2, out bool b1, out bool b2)
         {
-            LineSeg lineSeg = new LineSeg(ray.Origin, ray.NormalDirection * (float.MaxValue / 10000) + ray.Origin,
+            LineSeg lineSeg = new LineSeg(ray.Origin, ray.NormalDirection * (double.MaxValue / 10000) + ray.Origin,
                 LineSegs[line].Normal, 0);
-            float p1l = ray.Direction.Magnitude();
-            float p2l = float.MaxValue;
+            double p1l = ray.Direction.Magnitude();
+            double p2l = double.MaxValue;
             p1 = new Point(LineSegs[line].Material, line, ray.Direction + ray.Origin);
             p2 = new Point();
             b1 = true;
@@ -336,7 +337,7 @@ namespace OstrichRenderer
                 if (!LineSeg.IsIntersect(lineSeg, LineSegs[i], out Vector2 vector2)) continue;
                 if (vector2 == p1.Position) continue;
                 if (vector2 == LineSegs[i].P1 || vector2 == LineSegs[i].P2) continue;
-                float l = (ray.Origin - vector2).Magnitude();
+                double l = (ray.Origin - vector2).Magnitude();
                 if (l < p1l && b1) b1 = false;
                 if (l < p2l)
                 {
@@ -373,7 +374,7 @@ namespace OstrichRenderer
             //Random.Seed = Seeds[x, y];
             //for (int i = 0; i < Sample; i++)
             //{
-            //    float a = Mathf.TwoPi * (i + Random.Get()) / Sample;
+            //    double a = Mathf.TwoPi * (i + Random.Get()) / Sample;
             //    Trace(new Ray(new Vector2(x, y), new Vector2(Math.Cos(a), Math.Sin(a))), 0, true);
             //}
 //#endif

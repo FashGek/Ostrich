@@ -86,8 +86,8 @@ namespace OstrichRenderer.Rendering
             Vector2 s1 = l1.P2 - l1.P1;
             Vector2 s2 = l2.P2 - l2.P1;
 
-            float s = (-s1.Y * (l1.P1.X - l2.P1.X) + s1.X * (l1.P1.Y - l2.P1.Y)) / (-s2.X * s1.Y + s1.X * s2.Y);
-            float t = (s2.X * (l1.P1.Y - l2.P1.Y) - s2.Y * (l1.P1.X - l2.P1.X)) / (-s2.X * s1.Y + s1.X * s2.Y);
+            double s = (-s1.Y * (l1.P1.X - l2.P1.X) + s1.X * (l1.P1.Y - l2.P1.Y)) / (-s2.X * s1.Y + s1.X * s2.Y);
+            double t = (s2.X * (l1.P1.Y - l2.P1.Y) - s2.Y * (l1.P1.X - l2.P1.X)) / (-s2.X * s1.Y + s1.X * s2.Y);
 
             if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
             {
@@ -100,6 +100,6 @@ namespace OstrichRenderer.Rendering
 
         //public bool IsConnectedWith(LineSeg line) => P1 == line.P1 || P1 == line.P2 || P2 == line.P1 || line.P2 == P2;
 
-        public float Length() => (P1 - P2).Magnitude();
+        public double Length() => (P1 - P2).Magnitude();
     }
 }

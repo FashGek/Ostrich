@@ -1,18 +1,18 @@
-﻿using OstrichRenderer.Materials;
-using OstrichRenderer.Rendering;
+﻿using OstrichRenderer.Rendering;
 using OstrichRenderer.RenderMath;
 using System;
 using System.Collections.Generic;
 
 namespace OstrichRenderer.Primitives
 {
+    [Obsolete]
     public class Circle : Hitable
     {
         public Vector2 Center;
-        public float R, R2;
+        public double R, R2;
         public ushort Material;
 
-        public Circle(Vector2 cen, float r, ushort material)
+        public Circle(Vector2 cen, double r, ushort material)
         {
             Center = cen;
             Material = material;
@@ -29,7 +29,7 @@ namespace OstrichRenderer.Primitives
             return true;
         }
 
-        public override bool IsOnBoundary(Vector2 point) => (Center - point).Magnitude() <= float.Epsilon;
+        public override bool IsOnBoundary(Vector2 point) => (Center - point).Magnitude() <= double.Epsilon;
 
         public override List<LineSeg> GetLineSegs() => new List<LineSeg>();
         

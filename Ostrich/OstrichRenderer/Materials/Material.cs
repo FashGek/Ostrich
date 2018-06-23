@@ -1,36 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OstrichRenderer.Primitives;
-using OstrichRenderer.Rendering;
-using OstrichRenderer.RenderMath;
-using Random = OstrichRenderer.RenderMath.Random;
+﻿using OstrichRenderer.RenderMath;
 
 namespace OstrichRenderer.Materials
 {
-    public abstract class Material
+    public struct Material
     {
-        public float Reflectivity;
-
-        public abstract Color32 GetColor();
-    }
-
-    public class Light : Material
-    {
-        /// 强度
-        public float Intensity;
-
         public Color32 Color;
 
-        public Light(Color32 color, float intensity, float reflectivity)
+        /// 强度
+        public double Intensity;
+
+        public Material(Color32 color, double intensity = 0)
         {
             Color = color;
             Intensity = intensity;
-            Reflectivity = reflectivity;
         }
 
-        public override Color32 GetColor() => Color * Intensity;
+        public Color32 GetColor() => Intensity * Color;
     }
 }

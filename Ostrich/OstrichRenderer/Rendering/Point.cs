@@ -8,7 +8,7 @@ namespace OstrichRenderer.Rendering
         public ushort Materail;
         public uint Line;
         public Vector2 Position;
-        public float Distance;
+        public double Distance;
 
         public Point(ushort materail, uint line, Vector2 position)
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OstrichRenderer.Rendering;
 using OstrichRenderer.RenderMath;
@@ -7,6 +8,7 @@ namespace OstrichRenderer.Primitives
 {
     /// 相交判断没写好，有bug
     /// 由于在堆上的内存分配较频繁，GC消耗大
+    [Obsolete]
     public class Substract : Hitable
     {
         private readonly Hitable Minuend;
