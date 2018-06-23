@@ -21,15 +21,15 @@ namespace OstrichRenderer.Primitives
         {
             bool isInside = IsInside(ray.Origin);
             Vector2 nowNormal = isInside ? -Normal : Normal;
-            bool isopposite = ray.Direction * nowNormal > 0;
-            if (isopposite && !isInside) return false;
+            bool isOpposite = ray.Direction * nowNormal > 0;
+            if (isOpposite && !isInside) return false;
             Vector2 inter = CalcIntersect(ray);
             double t = (inter - ray.Origin).Magnitude();
             if (t > tMax && !double.IsInfinity(t) && !isInside) return false;
             rec.P = inter;
             rec.Material = Material;
             rec.Normal = nowNormal;
-            rec.T = isopposite ? double.MaxValue : t;
+            rec.T = isOpposite ? double.MaxValue : t;
             rec.IsInside = isInside;
             rec.Object = this;
             return true;

@@ -34,8 +34,45 @@ namespace OstrichRenderer
 
         public static void InitScene()
         {
-            World.Add(new Circle(new Vector2(192, 256), 128, new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) -
-                      new Circle(new Vector2(320, 256), 128, new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+            //World.Add(
+            //    new Quadrilateral(new Vector2(300, 100), new Vector2(100, 100), new Vector2(99, 300),
+            //        new Vector2(299, 300), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)) -
+            //    new Quadrilateral(new Vector2(400, 200), new Vector2(200, 200), new Vector2(199, 400),
+            //        new Vector2(399, 400), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(150, 100), new Vector2(67, 84), new Vector2(32, 576),
+                new Vector2(118, 580), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+            World.Add(new Quadrilateral(new Vector2(322, 81), new Vector2(161, 103), new Vector2(169, 176),
+                new Vector2(343, 157), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+            World.Add(new Quadrilateral(new Vector2(323, 291), new Vector2(155, 300), new Vector2(149, 379),
+                new Vector2(320, 375), new Light(new Color32(1, 0.5, 0.5), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(416, 98), 55, new Light(new Color32(0.75, 0.75, 0.5), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(516, 129), new Vector2(448, 172), new Vector2(647, 569),
+                          new Vector2(721, 534), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)) + new Quadrilateral(
+                          new Vector2(746, 153), new Vector2(635, 100), new Vector2(412, 536),
+                          new Vector2(455, 581), new Light(new Color32(0.5, 1, 0.5), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(738, 628), 55, new Light(new Color32(0.5, 0.75, 0.75), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(927, 128), new Vector2(862, 118), new Vector2(758, 540),
+                new Vector2(826, 569), new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(931, 73), 49, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(993, 112), new Vector2(943, 129), new Vector2(1045, 585),
+                new Vector2(1120, 572), new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(1122, 635), 47, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(1278, 123), new Vector2(1208, 120), new Vector2(1130, 571),
+                new Vector2(1187, 592), new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Circle(new Vector2(1284, 73), 44, new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
+
+            World.Add(new Quadrilateral(new Vector2(1358, 115), new Vector2(1286, 121), new Vector2(1389, 619),
+                new Vector2(1465, 604), new Light(new Color32(0.5, 0.5, 1), 1, 0.3)));
         }
 
         /* FXM 1500 * 700
@@ -152,7 +189,7 @@ namespace OstrichRenderer
                 {
                     for (int x = 0; x < Width; x++)
                 {
-                    if (x == 515 && y == 276)
+                    if (x == 219 && y == 210)
                     {
 
                     }
@@ -163,7 +200,7 @@ namespace OstrichRenderer
                 }
                 });
             //}
-            stopwatch.Stop();
+        stopwatch.Stop();
             Console.WriteLine(stopwatch.ElapsedMilliseconds / 1000f);
             Console.WriteLine((RayCount / 1000000.0 / (stopwatch.ElapsedMilliseconds / 1000d)).ToString("F1") + "MRays/s");
         }
@@ -201,7 +238,8 @@ namespace OstrichRenderer
                 Ray r = new Ray(Vector2.Zero, Vector2.Zero);
 
                 if (depth < MaxDepth && hit.Material.Scatter(ray, hit, ref attenuation, ref r))
-                    return attenuation + hit.Material.Reflectivity * Trace(r, depth + 1, debug);
+                    //return attenuation + hit.Material.Reflectivity * Trace(r, depth + 1, debug);
+                return attenuation;
                 return attenuation;
             }
 #if DEBUG

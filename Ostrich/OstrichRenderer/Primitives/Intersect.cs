@@ -34,9 +34,10 @@ namespace OstrichRenderer.Primitives
         public override bool IsInside(Vector2 point) => O1.IsInside(point) && O2.IsInside(point);
         public override HitRecord[] GetAllCross(Ray ray, double tMin, double tMax)
         {
-            List<HitRecord> records = new List<HitRecord>();
-            records.AddRange(O1.GetAllCross(ray, tMin, tMax));
-            records.AddRange(O2.GetAllCross(ray, tMin, tMax));
+            HitRecord[] records1 = O1.GetAllCross(ray, tMin, tMax);
+            HitRecord[] records2 = O2.GetAllCross(ray, tMin, tMax);
+            List<HitRecord> records = records1.Where(hitRecord => O2.IsInside(hitRecord.P)).ToList();
+            records.AddRange(records2.Where(hitRecord => O1.IsInside(hitRecord.P)));
             return records.ToArray();
         }
 
