@@ -58,7 +58,7 @@ namespace OstrichRenderer
 
             Materials = new Material[]
             {
-                new Dielectirc(1, 1),
+                new Dielectirc(0.9, 1),
                 new Light(new Color32(1,0.5,0), 1, 0.3),
                 new Light(new Color32(0,0.5,1), 1, 0.3),
                 new Metal(0.7), 

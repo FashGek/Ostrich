@@ -20,20 +20,12 @@ namespace OstrichRenderer.Materials
         public bool Refract(LineSeg rayIn, HitRecord record, ref LineSeg refracted)
         {
             if (Refractivity < double.Epsilon) return false; //判断是不是反射材质
-            double idotn = rayIn.NormalP2 * record.Normal;
-            double k, a;
-            if (idotn > 0) //从内向外折射
-            {
-                k = 1 - Refractivity * Refractivity * (1 - idotn * idotn);
-                if (k < 0) return false;  //全反射
-                a = Refractivity * idotn - Math.Sqrt(k);
-            }
-            else //从外向内折射
-            {
-                Refractivity = 1 / Refractivity;
-                k = 1 - Refractivity * Refractivity * (1 - idotn * idotn);
-                a = Refractivity * idotn + Math.Sqrt(k);
-            }
+
+            double dot = rayIn.NormalP2 * record.Normal;
+            double k = 1 - Refractivity * Refractivity * (1 - dot * dot);
+            if (k <= 0) return false; //全反射
+            double a = Refractivity * dot + Math.Sqrt(k);
+
             Vector2 refract = rayIn.NormalP2 * Refractivity - record.Normal * a;
             refracted = new LineSeg(record.P + 0.0001 * (record.IsInside ? record.Normal : -record.Normal), refract * 1e7);
             return true;
